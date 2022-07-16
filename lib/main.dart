@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'widget/custom_tab_bar.dart';
+import 'widgets/custom_tab_bar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,7 +27,32 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomTabBar(),
+      body: CustomTabBar(
+        <Tab>[
+          Tab(text: 'ネットワーク'),
+          Tab(text: 'おすすめ'),
+          Tab(text: 'セキュリティ'),
+          Tab(text: 'AI'),
+          Tab(text: 'AI2'),
+        ],
+        <Widget>[
+          Center(
+            child: Text('ネットワーク', style: TextStyle(fontSize: 32.0)),
+          ),
+          Center(
+            child: Text('おすすめ', style: TextStyle(fontSize: 32.0)),
+          ),
+          Center(
+            child: Text('セキュリティ', style: TextStyle(fontSize: 32.0)),
+          ),
+          Center(
+            child: Text('AI', style: TextStyle(fontSize: 32.0)),
+          ),
+          Center(
+            child: Text('AI2', style: TextStyle(fontSize: 32.0)),
+          ),
+        ],
+      ),
     );
   }
 }
