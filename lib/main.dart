@@ -28,14 +28,14 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomTabBar(
-        <Tab>[
+        tab: [
           Tab(text: 'ネットワーク'),
           Tab(text: 'おすすめ'),
           Tab(text: 'セキュリティ'),
           Tab(text: 'AI'),
           Tab(text: 'AI2'),
         ],
-        <Widget>[
+        list: [
           Center(
             child: Text('ネットワーク', style: TextStyle(fontSize: 32.0)),
           ),
