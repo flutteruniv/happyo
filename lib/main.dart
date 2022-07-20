@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:happyo/video_player_sample.dart';
 
 import 'widgets/custom_tab_bar.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(VideoApp());
 }
 
 class MyApp extends StatelessWidget {
