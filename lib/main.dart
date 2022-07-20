@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'chewie_sample.dart';
 import 'widgets/custom_tab_bar.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChewieSample());
 }
 
 class MyApp extends StatelessWidget {
