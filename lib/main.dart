@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'widgets/custom_tab_bar.dart';
 
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -26,6 +28,18 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    var ytcl = YoutubePlayerController(
+      initialVideoId: 'I6TpDuSFbTc',
+      params: YoutubePlayerParams(
+        playlist: ['4b6DuHGcltI',
+          'Cpg3otpYG9w'
+        ],
+        showControls: true,
+        showFullscreenButton: true,
+      ),
+    );
+
     return Scaffold(
       body: CustomTabBar(
         tab: [
@@ -34,6 +48,7 @@ class MyHomePage extends StatelessWidget {
           Tab(text: 'セキュリティ'),
           Tab(text: 'AI'),
           Tab(text: 'AI2'),
+          Tab(text: 'YouTube'),
         ],
         list: [
           Center(
@@ -51,6 +66,15 @@ class MyHomePage extends StatelessWidget {
           Center(
             child: Text('AI2', style: TextStyle(fontSize: 32.0)),
           ),
+          YoutubePlayerControllerProvider(controller: ytcl,
+              child: Container(
+                padding: const EdgeInsets.all(30),
+                  child: Column(
+                    children: [
+                    const YoutubePlayerIFrame()
+                  ],),
+                ),
+              )
         ],
       ),
     );
