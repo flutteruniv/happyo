@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:happyo/testModel.dart';
+import 'package:provider/provider.dart';
 
 import 'widgets/custom_tab_bar.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +26,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(),
+      home: ChangeNotifierProvider<testModel>(
+        // createでfetchBooks()も呼び出すようにしておく。
+        create: (_) => testModel()..fetchBooks(),
+        child: const testUI(),
+      )
     );
   }
 }
@@ -53,6 +67,37 @@ class MyHomePage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class testUI extends StatelessWidget {
+  const testUI({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('一覧'),
+      ),
+      body: Consumer<testModel>(
+          builder: (context, model, child) {
+            // FirestoreのドキュメントのList testsを取り出す。
+            final tests = model.tests;
+            return ListView.builder(
+              // Listの長さを先ほど取り出したtestsの長さにする。
+              itemCount: tests.length,
+              // indexにはListのindexが入る。
+              itemBuilder: (context, index) {
+                return ListTile(
+                  //　books[index]でList booksのindex番目の要素が取り出せる。
+                  title: Text(tests[index].test_field),
+                  subtitle: Text(tests[index].created_at.toDate().toString()),
+                );
+              },
+            );
+          },
+      )
     );
   }
 }
