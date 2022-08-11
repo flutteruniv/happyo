@@ -3,13 +3,9 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
-/*
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-final api1 = DotEnv().env['api1'];
-final api2 = DotEnv().env['api2'];
-final api3 = DotEnv().env['api3'];
-*/
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -50,8 +46,8 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyATVbIyaaU6EfV1vmYdHshbU21XrCEl_Hg',
+  static FirebaseOptions web = FirebaseOptions(
+    apiKey: dotenv.env['apiWeb'].toString(),
     appId: '1:976548096870:web:5930f122e67dee588536a7',
     messagingSenderId: '976548096870',
     projectId: 'happyo-dev',
@@ -59,16 +55,16 @@ class DefaultFirebaseOptions {
     storageBucket: 'happyo-dev.appspot.com',
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDjOpKwVe7VNEIhGqh3F8Po3ajBRRQtlKk',
+  static FirebaseOptions android = FirebaseOptions(
+    apiKey: dotenv.env['apiAndroid'].toString(),
     appId: '1:976548096870:android:7d8a56606385811f8536a7',
     messagingSenderId: '976548096870',
     projectId: 'happyo-dev',
     storageBucket: 'happyo-dev.appspot.com',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBqgEQjZud1xOVmZxczPqkqSgBlZlB8iCA',
+  static FirebaseOptions ios = FirebaseOptions(
+    apiKey: dotenv.env['apiIos'].toString(),
     appId: '1:976548096870:ios:8dbe67d0b32de67e8536a7',
     messagingSenderId: '976548096870',
     projectId: 'happyo-dev',
@@ -77,8 +73,8 @@ class DefaultFirebaseOptions {
     iosBundleId: 'com.example.happyo',
   );
 
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBqgEQjZud1xOVmZxczPqkqSgBlZlB8iCA',
+  static FirebaseOptions macos = FirebaseOptions(
+    apiKey: dotenv.env['apiIos'].toString(),
     appId: '1:976548096870:ios:8dbe67d0b32de67e8536a7',
     messagingSenderId: '976548096870',
     projectId: 'happyo-dev',
@@ -86,4 +82,5 @@ class DefaultFirebaseOptions {
     iosClientId: '976548096870-cch461jgleg6ck2mrlcgckn6dnod0la4.apps.googleusercontent.com',
     iosBundleId: 'com.example.happyo',
   );
+
 }
