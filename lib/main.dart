@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:happyo/widgets/youtube_player.dart';
 
 import 'widgets/custom_tab_bar.dart';
 
@@ -29,6 +30,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       body: CustomTabBar(
         tab: [
+          Tab(text: 'YouTube再生ウィジェット'),
           Tab(text: 'ネットワーク'),
           Tab(text: 'おすすめ'),
           Tab(text: 'セキュリティ'),
@@ -36,6 +38,9 @@ class MyHomePage extends StatelessWidget {
           Tab(text: 'AI2'),
         ],
         list: [
+          Center(
+            child: YouTubePlayer(videoId: 'I6TpDuSFbTc'),
+          ),
           Center(
             child: Text('ネットワーク', style: TextStyle(fontSize: 32.0)),
           ),
