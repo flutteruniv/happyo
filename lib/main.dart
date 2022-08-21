@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:happyo/widgets/HLS_player.dart';
 
 import 'widgets/custom_tab_bar.dart';
 
@@ -29,6 +30,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       body: CustomTabBar(
         tab: [
+          Tab(text: 'HLS再生Wiget'),
           Tab(text: 'ネットワーク'),
           Tab(text: 'おすすめ'),
           Tab(text: 'セキュリティ'),
@@ -36,6 +38,10 @@ class MyHomePage extends StatelessWidget {
           Tab(text: 'AI2'),
         ],
         list: [
+          Center(
+            child: HlsPlayer(
+                url: 'https://d1z7r4ej4jf82p.cloudfront.net/sample.m3u8'),
+          ),
           Center(
             child: Text('ネットワーク', style: TextStyle(fontSize: 32.0)),
           ),
