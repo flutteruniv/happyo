@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:happyo/widgets/custom_tab_bar.dart';
+import 'package:happyo/widgets/side_menu.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,7 +12,7 @@ class HomePage extends StatelessWidget {
         title: const Text('HAPPYO'),
         centerTitle: false,
       ),
-      drawer: Drawer(),
+      drawer: SideMenu(),
       body: CustomTabBar(
         tabs: [
           Tab(text: 'ネットワーク'),
