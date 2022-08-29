@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:happyo/page/home_page.dart';
+import 'package:happyo/page/profile/profile_page.dart';
 
-class Routes {
+abstract class Routes {
   static const String index = '/';
+  static const String profile = 'profile';
+
+  static Map<String, Widget Function(BuildContext)> get routes {
+    return {
+      index: (context) {
+        return HomePage();
+      },
+      profile: (context) {
+        return ProfilePage();
+      }
+    };
+  }
 
   static void pushNamed(BuildContext context, String routeName,
       {Object? args}) {
