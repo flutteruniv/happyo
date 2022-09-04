@@ -82,6 +82,15 @@ class GuestProfileHeader extends StatelessWidget {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
+  Future<void> logout() async {
+    final googleSignIn = GoogleSignIn();
+    if (await googleSignIn.isSignedIn()) {
+      await googleSignIn.signOut();
+    }
+
+    return FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
