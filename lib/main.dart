@@ -4,11 +4,14 @@ import 'package:happyo/common/routes.dart';
 import 'package:happyo/firebase_options.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  // await dotenv.load(fileName: '.env');
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // Unhandled Exception: [core/duplicate-app] A Firebase App named "[DEFAULT]" already exists
+  try{
+    WidgetsFlutterBinding.ensureInitialized();
+    // await dotenv.load(fileName: '.env');
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch(e){}
   runApp(MyApp());
 }
 
