@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:happyo/page/login_page.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -13,6 +16,7 @@ class ProfilePage extends StatelessWidget {
             ProfileHeader(),
             AppInfoBlock(),
             TermsInfoBlock(),
+            AccountBlock(),
           ],
         ),
       ),
@@ -79,7 +83,16 @@ class GuestProfileHeader extends StatelessWidget {
                 child: const Text('新規登録'),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () => showModalBottomSheet(
+                  context: context,
+                  backgroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                  ),
+                  builder: (context) {
+                    return login_page();
+                  },
+                ),
                 child: const Text('ログイン'),
               ),
             ],
@@ -205,3 +218,34 @@ class TermsInfoBlock extends StatelessWidget {
     );
   }
 }
+
+class AccountBlock extends StatelessWidget {
+  const AccountBlock({Key? key}) : super(key: key);
+
+  Future<void> logout() async {
+    final googleSignIn = GoogleSignIn();
+    if (await googleSignIn.isSignedIn()) {
+      await googleSignIn.signOut();
+    }
+
+    return FirebaseAuth.instance.signOut();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InfoBlockHeader(text: 'アカウント'),
+        TextButton(
+          onPressed: () {
+            logout();
+          },
+          child: const ListTile(
+            title: Text('ログアウト'),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
