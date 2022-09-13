@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 
 class EventDatePicker extends StatefulWidget {
   EventFormLabel? label;
-  DateTime initialDate;
+  DateTime? initialDate;
   DateTime firstDate;
   DateTime lastDate;
   Function(DateTime?)? onChanged;
@@ -26,44 +26,43 @@ class EventDatePicker extends StatefulWidget {
 }
 
 class _EventDatePickerState extends State<EventDatePicker> {
-  late DateTime _datetime;
+  DateTime? currentDate;
   @override
   Widget build(BuildContext context) {
-    _datetime = widget.initialDate;
-
+    currentDate = widget.initialDate;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.label != null) widget.label!,
         TextButton(
-          onPressed: () async {
-            DateTime? datetime;
-            if (kIsWeb) {
-              datetime = await showDatePicker(
-                  context: context,
-                  initialDate: widget.initialDate,
-                  firstDate: widget.firstDate,
-                  lastDate: widget.lastDate);
-            } else {
-              datetime = await DatePicker.showDatePicker(context);
-            }
-            if (widget.onChanged != null) {
-              widget.onChanged!(datetime);
-            }
-          },
+          onPressed: _onPressed,
           child: SizedBox(
             width: double.infinity,
-            child: () {
-              if (_datetime != null) {
-                return Text(
-                    DateFormat(Format.DATETIME_YYYYMMDD_JP).format(_datetime));
-              } else {
-                return const Text('日にち未選択');
-              }
-            }(),
+            child: widget.initialDate == null
+                ? const Text('日にち未選択')
+                : Text(DateFormat(Format.DATETIME_YYYYMMDD_JP)
+                    .format(currentDate!)),
           ),
         ),
       ],
     );
+  }
+
+  Future<void> _onPressed() async {
+    if (kIsWeb) {
+      currentDate = await showDatePicker(
+          context: context,
+          initialDate: widget.initialDate ?? widget.firstDate,
+          firstDate: widget.firstDate,
+          lastDate: widget.lastDate);
+    } else {
+      currentDate = await DatePicker.showDatePicker(
+        context,
+        locale: LocaleType.jp,
+      );
+    }
+    if (widget.onChanged != null) {
+      widget.onChanged!(currentDate);
+    }
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:happyo/common/logger.dart';
 import 'package:happyo/page/event/form/event_form_label.dart';
@@ -9,11 +11,12 @@ import 'package:happyo/common/image_picker.dart'
 class EventImageForm extends StatefulWidget {
   EventFormLabel? label;
   Image? _image;
-  Function(Image?)? onCahnaged;
+  Function(File?)? onChanged;
 
   EventImageForm({
     super.key,
     this.label,
+    this.onChanged,
   });
 
   @override
@@ -21,17 +24,18 @@ class EventImageForm extends StatefulWidget {
 }
 
 class _EventImageFormState extends State<EventImageForm> {
-  Future<Image?> _pickImage() async {
+  Future<File?> _pickImage() async {
     logger.debug('pick image');
     return await image_picker.pickImage();
   }
 
-  void _updateImage(Image? image) {
+  void _updateImage(File? file) {
+    if (file == null) return;
     setState(() {
-      widget._image = image;
+      widget._image = Image.file(file);
     });
-    if (widget.onCahnaged != null) {
-      widget.onCahnaged!(image);
+    if (widget.onChanged != null) {
+      widget.onChanged!(file);
     }
   }
 
@@ -59,7 +63,7 @@ class _EventImageFormState extends State<EventImageForm> {
         ),
         TextButton(
           onPressed: () async {
-            Image? image = await _pickImage();
+            File? image = await _pickImage();
             _updateImage(image);
           },
           child: const Text('画像を選択'),

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:happyo/common/format.dart';
 import 'package:happyo/common/logger.dart';
@@ -23,10 +26,16 @@ class EventCreatePageState extends State<EventCreatePage> {
   late HappyoEvent event;
   late DateTime nowDateTime;
   late TimeOfDay nowTimeOfDay;
+  late File? currentEventImage;
+
+  _getCurrentEventImage() {
+    return null;
+  }
 
   @override
   void initState() {
     event = HappyoEvent();
+    currentEventImage = _getCurrentEventImage();
     super.initState();
   }
 
@@ -42,7 +51,11 @@ class EventCreatePageState extends State<EventCreatePage> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 9),
             child: TextButton(
-              onPressed: _uploadEvent,
+              onPressed: () {
+                if (_validate()) {
+                  _uploadEvent();
+                }
+              },
               child: const Text('確定する'),
             ),
           )
@@ -50,10 +63,8 @@ class EventCreatePageState extends State<EventCreatePage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 8,
-            horizontal: 32,
-          ),
+          padding:
+              const EdgeInsets.only(top: 8, left: 32, right: 32, bottom: 60),
           child: Column(
             children: [
               // イベント基本情報
@@ -66,6 +77,7 @@ class EventCreatePageState extends State<EventCreatePage> {
                   ),
                   EventImageForm(
                     label: EventFormLabel('イベント画像'),
+                    onChanged: _updateCurrentEventImage,
                   ),
                 ],
               ),
@@ -75,44 +87,36 @@ class EventCreatePageState extends State<EventCreatePage> {
                 children: [
                   EventDatePicker(
                     label: EventFormLabel('イベント開始日'),
-                    initialDate: event.eventStartDateTime ?? nowDateTime,
+                    initialDate: event.eventStartDateTime,
                     firstDate: nowDateTime,
                     lastDate: nowDateTime.add(const Duration(days: 3650)),
                     onChanged: _updateEventStartDate,
                   ),
                   EventTimePicker(
                     label: EventFormLabel('イベント開始時間'),
-                    currentTime: event.eventStartDateTime != null
-                        ? TimeOfDay.fromDateTime(event.eventStartDateTime!)
-                        : nowTimeOfDay,
+                    currentTime: event.eventStartDateTime,
                     onChanged: _updateEventStartTime,
                   ),
                   EventDatePicker(
                     label: EventFormLabel('イベント終了日'),
-                    initialDate: event.eventEndDateTime ?? nowDateTime,
+                    initialDate: event.eventEndDateTime,
                     firstDate: nowDateTime,
                     lastDate: nowDateTime.add(const Duration(days: 3650)),
                     onChanged: _updateEventEndDate,
                   ),
                   EventTimePicker(
                     label: EventFormLabel('イベント終了時間'),
-                    currentTime: event.eventEndTime != null
-                        ? TimeOfDay.fromDateTime(event.eventEndDateTime!)
-                        : nowTimeOfDay,
+                    currentTime: event.eventEndDateTime,
                     onChanged: _updateEventEndTime,
                   ),
                   EventTextField(
                     label: EventFormLabel('イベント開催場所'),
-                    onChanged: (text) {
-                      event = event.copyWith(location: text);
-                    },
+                    onChanged: _updateEventLocation,
                   ),
                   EventTextField(
                     label: EventFormLabel('イベントの説明'),
-                    maxLines: 10,
-                    onChanged: (text) {
-                      event = event.copyWith(description: text);
-                    },
+                    maxLines: 5,
+                    onChanged: _updateEventDescription,
                   ),
                 ],
               ),
@@ -122,35 +126,31 @@ class EventCreatePageState extends State<EventCreatePage> {
                 children: [
                   EventNumberField(
                     label: EventFormLabel('定員'),
-                    onChanged: (text) {
-                      event = event.copyWith(capacity: int.tryParse(text));
-                    },
+                    onChanged: _updateEventCapacity,
                   ),
                   EventDatePicker(
                     label: EventFormLabel('募集開始日'),
-                    initialDate: nowDateTime,
+                    initialDate: event.applicationStartDateTime,
                     firstDate: nowDateTime,
-                    lastDate: nowDateTime.add(
-                      const Duration(days: 3650),
-                    ),
-                    onChanged: null,
+                    lastDate: nowDateTime.add(const Duration(days: 3650)),
+                    onChanged: _updateApplicationStartDate,
                   ),
                   EventTimePicker(
                     label: EventFormLabel('募集開始時間'),
-                    currentTime: nowTimeOfDay,
+                    currentTime: event.applicationStartDateTime,
+                    onChanged: _updateApplicationStartTime,
                   ),
                   EventDatePicker(
                     label: EventFormLabel('募集締切日'),
-                    initialDate: nowDateTime,
+                    initialDate: event.applicationDeadDateTime,
                     firstDate: nowDateTime,
-                    lastDate: nowDateTime.add(
-                      const Duration(days: 3650),
-                    ),
-                    onChanged: null,
+                    lastDate: nowDateTime.add(const Duration(days: 3650)),
+                    onChanged: _updateApplicationDeadDate,
                   ),
                   EventTimePicker(
                     label: EventFormLabel('募集締切時間'),
-                    currentTime: nowTimeOfDay,
+                    currentTime: event.applicationDeadDateTime,
+                    onChanged: _updateApplicationDeadTime,
                   ),
                 ],
               ),
@@ -160,44 +160,37 @@ class EventCreatePageState extends State<EventCreatePage> {
                 children: [
                   EventDatePicker(
                     label: EventFormLabel('動画配信予定日'),
-                    initialDate: nowDateTime,
+                    initialDate: event.videoDeliveryDateTime,
                     firstDate: nowDateTime,
-                    lastDate: nowDateTime.add(
-                      const Duration(days: 3650),
-                    ),
-                    onChanged: null,
+                    lastDate: nowDateTime.add(const Duration(days: 3650)),
+                    onChanged: _updateVideoDeliveryDate,
                   ),
                   EventTimePicker(
                     label: EventFormLabel('動画配信予定時間'),
-                    currentTime: nowTimeOfDay,
+                    currentTime: event.videoDeliveryDateTime,
+                    onChanged: _updateVideoDeliveryTime,
                   ),
                   EventTextField(
                     label: EventFormLabel('動画配信タイプ'),
-                    controller: null,
+                    onChanged: _updateVideoDeliveryType,
                   ),
                   EventTextField(
                     label: EventFormLabel('動画保存場所'),
-                    controller: null,
+                    onChanged: _updateVideoHolder,
                   ),
                   EventTextField(
                     label: EventFormLabel('動画URL'),
-                    onChanged: (text) {
-                      event = event.copyWith(videoUrl: text);
-                    },
+                    onChanged: _updateVideoUrl,
                   ),
                 ],
               ),
               EventTextField(
                 label: EventFormLabel('注意事項'),
-                onChanged: (text) {
-                  event = event.copyWith(notes: text);
-                },
+                onChanged: _updateEventNotes,
               ),
               EventTextField(
                 label: EventFormLabel('問合せ先メールアドレス'),
-                onChanged: (text) {
-                  event = event.copyWith(inquiryEmailAddress: text);
-                },
+                onChanged: _updateInquiryEmail,
               ),
             ],
           ),
@@ -206,85 +199,192 @@ class EventCreatePageState extends State<EventCreatePage> {
     );
   }
 
-  _uploadEvent() {
+  bool _validate() {
+    return true;
+  }
+
+  _uploadEvent() async {
+    if (currentEventImage != null) {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      try {
+        final filePath = "event_image/sample.png";
+        final task = await storage.ref(filePath).putFile(currentEventImage!);
+        logger.debug('uploading image to firebase storage is completed',
+            task.ref.fullPath);
+        event = event.copyWith(imageUrl: task.ref.fullPath);
+      } catch (e) {
+        logger.error('cannot upload image to firebase storage', args: e);
+      }
+    }
     logger.debug("upload event:", event);
   }
 
-  _updateEventTitle(title) {
+  _updateEventTitle(String? title) {
     event = event.copyWith(title: title);
   }
 
-  _updateEventStartDate(date) {
-    if (date != null) {
+  _updateCurrentEventImage(File? file) async {
+    currentEventImage = file;
+  }
+
+  _updateEventStartDate(DateTime? datetime) {
+    if (datetime != null) {
       setState(() {
         event = event.copyWith(
-            eventStartDate:
-                DateFormat(DateFormat.YEAR_NUM_MONTH_DAY).format(date));
-        event = event.copyWith(
-          eventStartDateTime: DateTime(
-            date.year,
-            date.month,
-            date.day,
-            event.eventStartDateTime?.hour ?? nowTimeOfDay.hour,
-            event.eventStartDateTime?.minute ?? nowTimeOfDay.minute,
-          ),
-          eventStartDate: DateFormat(Format.DATETIME_YYYYMMDD).format(date),
+          eventStartDateTime: datetime,
+          eventStartDate: DateFormat(Format.DATETIME_YYYYMMDD).format(datetime),
         );
       });
     }
   }
 
-  _updateEventStartTime(time) {
-    if (time != null) {
+  _updateEventStartTime(DateTime? datetime) {
+    if (datetime != null) {
       setState(() {
         event = event.copyWith(
-          eventStartDateTime: DateTime(
-            event.eventStartDateTime?.year ?? nowDateTime.year,
-            event.eventStartDateTime?.month ?? nowDateTime.month,
-            event.eventStartDateTime?.day ?? nowDateTime.day,
-            time.hour,
-            time.minute,
-          ),
-          eventStartTime: time.format(context),
+          eventStartDateTime: datetime,
+          eventStartTime: "",
         );
       });
     }
   }
 
-  _updateEventEndDate(date) {
-    if (date != null) {
+  _updateEventEndDate(DateTime? datetime) {
+    if (datetime != null) {
       setState(() {
         event = event.copyWith(
-            eventEndDate:
-                DateFormat(DateFormat.YEAR_NUM_MONTH_DAY).format(date));
-        event = event.copyWith(
-          eventEndDateTime: DateTime(
-            date.year,
-            date.month,
-            date.day,
-            event.eventEndDateTime?.hour ?? nowTimeOfDay.hour,
-            event.eventEndDateTime?.minute ?? nowTimeOfDay.minute,
-          ),
-          eventEndDate: DateFormat(Format.DATETIME_YYYYMMDD).format(date),
+          eventEndDateTime: datetime,
+          eventEndDate: DateFormat(Format.DATETIME_YYYYMMDD).format(datetime),
         );
       });
     }
   }
 
-  _updateEventEndTime(time) {
-    if (time != null) {
+  _updateEventEndTime(DateTime? datetime) {
+    if (datetime != null) {
       setState(() {
         event = event.copyWith(
-          eventEndDateTime: DateTime(
-            event.eventEndDateTime?.year ?? nowDateTime.year,
-            event.eventEndDateTime?.month ?? nowDateTime.month,
-            event.eventEndDateTime?.day ?? nowDateTime.day,
-            time.hour,
-            time.minute,
-          ),
-          eventEndTime: time.format(context),
+          eventEndDateTime: datetime,
+          eventEndTime: "",
         );
       });
     }
+  }
+
+  _updateEventLocation(String text) {
+    setState(() {
+      event = event.copyWith(location: text);
+    });
+  }
+
+  _updateEventDescription(String text) {
+    setState(() {
+      event = event.copyWith(description: text);
+    });
+  }
+
+  _updateEventCapacity(String text) {
+    setState(() {
+      event = event.copyWith(capacity: int.tryParse(text));
+    });
+  }
+
+  _updateApplicationStartDate(DateTime? datetime) {
+    if (datetime != null) {
+      setState(() {
+        event = event.copyWith(
+          applicationStartDateTime: datetime,
+          applicationStartDate:
+              DateFormat(Format.DATETIME_YYYYMMDD).format(datetime),
+        );
+      });
+    }
+  }
+
+  _updateApplicationStartTime(DateTime? datetime) {
+    if (datetime != null) {
+      setState(() {
+        event = event.copyWith(
+          applicationStartDateTime: datetime,
+          applicationStartTime: "",
+        );
+      });
+    }
+  }
+
+  _updateApplicationDeadDate(DateTime? datetime) {
+    if (datetime != null) {
+      setState(() {
+        event = event.copyWith(
+          applicationDeadDateTime: datetime,
+          applicationDeadDate:
+              DateFormat(Format.DATETIME_YYYYMMDD).format(datetime),
+        );
+      });
+    }
+  }
+
+  _updateApplicationDeadTime(DateTime? datetime) {
+    if (datetime != null) {
+      setState(() {
+        event = event.copyWith(
+          applicationDeadDateTime: datetime,
+          applicationDeadTime: "",
+        );
+      });
+    }
+  }
+
+  _updateVideoDeliveryDate(DateTime? datetime) {
+    if (datetime != null) {
+      setState(() {
+        event = event.copyWith(
+          videoDeliveryDateTime: datetime,
+          videoDeliveryDate:
+              DateFormat(Format.DATETIME_YYYYMMDD).format(datetime),
+        );
+      });
+    }
+  }
+
+  _updateVideoDeliveryTime(DateTime? datetime) {
+    if (datetime != null) {
+      setState(() {
+        event = event.copyWith(
+          videoDeliveryDateTime: datetime,
+          videoDeliveryTime: "",
+        );
+      });
+    }
+  }
+
+  _updateVideoDeliveryType(String text) {
+    setState(() {
+      event = event.copyWith(videoDeliveryType: 0);
+    });
+  }
+
+  _updateVideoHolder(String text) {
+    setState(() {
+      event = event.copyWith(videoHolder: 0);
+    });
+  }
+
+  _updateVideoUrl(String text) {
+    setState(() {
+      event = event.copyWith(videoUrl: text);
+    });
+  }
+
+  _updateEventNotes(String text) {
+    setState(() {
+      event = event.copyWith(notes: text);
+    });
+  }
+
+  _updateInquiryEmail(String text) {
+    setState(() {
+      event = event.copyWith(inquiryEmailAddress: text);
+    });
   }
 }

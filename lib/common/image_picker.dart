@@ -1,3 +1,3 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-Future<Image?> pickImage() async {}
+Future<File?> pickImage() async {}
