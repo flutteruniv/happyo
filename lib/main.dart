@@ -1,18 +1,20 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:happyo/common/my_theme.dart';
+import 'package:happyo/common/logger.dart';
 import 'package:happyo/common/routes.dart';
 import 'package:happyo/firebase_options.dart';
 
 Future<void> main() async {
-  // Unhandled Exception: [core/duplicate-app] A Firebase App named "[DEFAULT]" already exists
-  try{
+  try {
     WidgetsFlutterBinding.ensureInitialized();
-    // await dotenv.load(fileName: '.env');
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-  } catch(e){}
-  runApp(MyApp());
+  } catch (e) {
+    logger.error("application initialize error: ", args: e);
+  }
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -21,8 +23,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData.dark(),
+      theme: MyTheme.appThemeDataLight,
+      darkTheme: MyTheme.appThemeDataDark,
       initialRoute: Routes.index,
       routes: Routes.routes,
     );

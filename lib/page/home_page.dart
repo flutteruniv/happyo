@@ -9,7 +9,22 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('HAPPYO'),
+        title: Row(
+          children: [
+            Text(
+              'HAPPY',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+            ),
+            Text(
+              'O',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
+            ),
+          ],
+        ),
         centerTitle: false,
       ),
       drawer: SideMenu(),
