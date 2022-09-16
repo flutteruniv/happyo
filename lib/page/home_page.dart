@@ -38,7 +38,17 @@ class HomePage extends StatelessWidget {
         ],
         list: [
           Center(
-            child: Text('ネットワーク', style: TextStyle(fontSize: 32.0)),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'search');
+              },
+              child: Text(
+                "検索ページへ遷移",
+                style: TextStyle(fontSize: 32.0),
+              ),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.onPrimary),
+            ),
           ),
           Center(
             child: Text('おすすめ', style: TextStyle(fontSize: 32.0)),

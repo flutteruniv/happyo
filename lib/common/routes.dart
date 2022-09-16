@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:happyo/page/home_page.dart';
 import 'package:happyo/page/profile/profile_page.dart';
+import 'package:happyo/page/seach_page.dart';
 
 abstract class Routes {
   static const String index = '/';
   static const String profile = 'profile';
+  static const String search = 'search';
 
   static Map<String, Widget Function(BuildContext)> get routes {
     return {
@@ -13,6 +15,9 @@ abstract class Routes {
       },
       profile: (context) {
         return ProfilePage();
+      },
+      search: (context) {
+        return SearchPage();
       }
     };
   }
