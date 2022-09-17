@@ -526,7 +526,18 @@ packages:
       name: json_serializable
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "6.3.2"
+=======
+    version: "6.3.1"
+  line_icons:
+    dependency: "direct main"
+    description:
+      name: line_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
+>>>>>>> 21b0d1f (VideoTileのUIだけ完成)
   lints:
     dependency: transitive
     description:
