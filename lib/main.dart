@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:happyo/widgets/youtube_player.dart';
 import 'package:happyo/common/my_theme.dart';
 import 'package:happyo/common/logger.dart';
 import 'package:happyo/common/routes.dart';
