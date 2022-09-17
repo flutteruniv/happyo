@@ -1,9 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:happyo/widgets/youtube_player.dart';
+import 'package:happyo/common/my_theme.dart';
+import 'package:happyo/common/logger.dart';
+import 'package:happyo/common/routes.dart';
+import 'package:happyo/firebase_options.dart';
 
-import 'widgets/custom_tab_bar.dart';
-
-void main() {
+Future<void> main() async {
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    logger.error("application initialize error: ", args: e);
+  }
   runApp(const MyApp());
 }
 
@@ -13,51 +24,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomTabBar(
-        tab: [
-          Tab(text: 'YouTube再生ウィジェット'),
-          Tab(text: 'ネットワーク'),
-          Tab(text: 'おすすめ'),
-          Tab(text: 'セキュリティ'),
-          Tab(text: 'AI'),
-          Tab(text: 'AI2'),
-        ],
-        list: [
-          Center(
-            child: YouTubePlayer(videoId: 'I6TpDuSFbTc'),
-          ),
-          Center(
-            child: Text('ネットワーク', style: TextStyle(fontSize: 32.0)),
-          ),
-          Center(
-            child: Text('おすすめ', style: TextStyle(fontSize: 32.0)),
-          ),
-          Center(
-            child: Text('セキュリティ', style: TextStyle(fontSize: 32.0)),
-          ),
-          Center(
-            child: Text('AI', style: TextStyle(fontSize: 32.0)),
-          ),
-          Center(
-            child: Text('AI2', style: TextStyle(fontSize: 32.0)),
-          ),
-        ],
-      ),
+      theme: MyTheme.appThemeDataLight,
+      darkTheme: MyTheme.appThemeDataDark,
+      initialRoute: Routes.index,
+      routes: Routes.routes,
     );
   }
 }
