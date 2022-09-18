@@ -1,60 +1,89 @@
 import 'package:flutter/material.dart';
+import 'package:happyo/model/movie/movie.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:line_icons/line_icons.dart';
 
-class VideoTile extends StatelessWidget {
-  const VideoTile({super.key});
+import '../infrastructure/movie_repository.dart';
+
+class VideoTile extends HookConsumerWidget {
+  const VideoTile(this.movie, {super.key});
+
+  final Movie movie;
 
   @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      tileColor: Theme.of(context).colorScheme.background,
-      leading:
-          Image.network('https://i.ytimg.com/vi/PXnqg_Ozouk/maxresdefault.jpg'),
-      title: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('タイトルタイトルタイトルタイトルタイトルタイトル',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                )),
-            const Text(
-              'チャンネル名',
-              style: TextStyle(fontSize: 12),
-            ),
-            const SizedBox(height: 4),
-            SizedBox(
-              height: 14,
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                itemCount: 4,
-                itemBuilder: (BuildContext context, int index) {
-                  return const Padding(
-                    padding: EdgeInsets.only(right: 4.0),
-                    child: Text(
-                      '#dasta',
-                      style: TextStyle(fontSize: 12),
-                    ),
-                  );
-                },
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SizedBox(
+      height: 100,
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 0),
+            child: SizedBox(
+              height: 88,
+              width: 144,
+              child: Image.network(
+                'http://img.youtube.com/vi/${movie.youtubeId.toString()}/mqdefault.jpg',
+                fit: BoxFit.cover,
               ),
-            )
-          ],
-        ),
-      ),
-      trailing: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Column(
-          //アイコンがリストタイルの中央に配置
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(LineIcons.youtube),
-          ],
-        ),
+            ),
+          ),
+          Expanded(
+            child: ListTile(
+              tileColor: Theme.of(context).colorScheme.background,
+              title: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 3,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(movie.title.toString(),
+                        maxLines: 3,
+                        style: const TextStyle(
+                          height: 1.1,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        )),
+                    Text(
+                      movie.hostName.toString(),
+                      maxLines: 1,
+                      style: const TextStyle(fontSize: 10),
+                    ),
+                    const SizedBox(height: 4),
+                    SizedBox(
+                      height: 14,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const ClampingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: movie.tag!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 4.0),
+                            child: Text(
+                              '#${movie.tag![index].toString()}',
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              trailing: Column(
+                //アイコンがリストタイルの中央に配置
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // videoHolder (0:Happyo, 1:YouTube)
+                  movie.videoHolder == 0
+                      ? const Icon(Icons.movie)
+                      : const Icon(LineIcons.youtube),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
