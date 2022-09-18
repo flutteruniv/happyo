@@ -300,6 +300,7 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+<<<<<<< HEAD
   flutter_datetime_picker:
     dependency: "direct main"
     description:
@@ -314,6 +315,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.4.3+7"
+=======
+  flutter_hooks:
+    dependency: "direct main"
+    description:
+      name: flutter_hooks
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.18.5+1"
+>>>>>>> 96acc6b (videoPlayListの作成)
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -321,6 +331,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+<<<<<<< HEAD
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -328,6 +339,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.7"
+=======
+  flutter_riverpod:
+    dependency: transitive
+    description:
+      name: flutter_riverpod
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
+>>>>>>> 96acc6b (videoPlayListの作成)
   flutter_signin_button:
     dependency: "direct main"
     description:
@@ -422,6 +442,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+<<<<<<< HEAD
   html:
     dependency: transitive
     description:
@@ -436,6 +457,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.13.5"
+=======
+  hooks_riverpod:
+    dependency: "direct main"
+    description:
+      name: hooks_riverpod
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
+>>>>>>> 96acc6b (videoPlayListの作成)
   http_multi_server:
     dependency: transitive
     description:
@@ -587,6 +617,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+<<<<<<< HEAD
   nil:
     dependency: "direct main"
     description:
@@ -594,6 +625,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.1"
+=======
+>>>>>>> 96acc6b (videoPlayListの作成)
   package_config:
     dependency: transitive
     description:
@@ -623,7 +656,11 @@ packages:
     source: hosted
     version: "1.5.1"
   provider:
+<<<<<<< HEAD
     dependency: transitive
+=======
+    dependency: "direct main"
+>>>>>>> 96acc6b (videoPlayListの作成)
     description:
       name: provider
       url: "https://pub.dartlang.org"
@@ -650,6 +687,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.0"
+  riverpod:
+    dependency: transitive
+    description:
+      name: riverpod
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   shelf:
     dependency: transitive
     description:
@@ -697,6 +741,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.0"
+  state_notifier:
+    dependency: transitive
+    description:
+      name: state_notifier
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.2+1"
   stream_channel:
     dependency: transitive
     description:
