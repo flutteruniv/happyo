@@ -24,6 +24,8 @@ class CustomTabBar extends StatelessWidget {
               isScrollable: true,
               labelPadding: const EdgeInsets.symmetric(horizontal: 16.0),
               tabs: tabs,
+              indicatorColor: Theme.of(context).colorScheme.surfaceTint,
+              labelColor: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),

@@ -1,15 +1,21 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:happyo/widgets/youtube_player.dart';
+import 'package:happyo/common/my_theme.dart';
+import 'package:happyo/common/logger.dart';
 import 'package:happyo/common/routes.dart';
 import 'package:happyo/firebase_options.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  // await dotenv.load(fileName: '.env');
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(MyApp());
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    logger.error("application initialize error: ", args: e);
+  }
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +26,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData.dark(),
+      theme: MyTheme.appThemeDataLight,
+      darkTheme: MyTheme.appThemeDataDark,
       initialRoute: Routes.index,
       routes: Routes.routes,
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:happyo/common/my_syles.dart';
 import 'package:happyo/common/routes.dart';
 
 class SideMenu extends StatelessWidget {
@@ -9,16 +10,19 @@ class SideMenu extends StatelessWidget {
         children: [
           UserAccountsDrawerHeader(
             currentAccountPicture: CircleAvatar(),
-            accountName: Text('アカウント名'),
-            accountEmail: Text('メールアドレス'),
+            accountName: Text('アカウント名', style: MyStyles.defaultText(context)),
+            accountEmail: Text('メールアドレス', style: MyStyles.defaultText(context)),
           ),
           TextButton(
             onPressed: () {
               Routes.pushNamed(context, Routes.profile);
             },
-            child: const ListTile(
-              leading: Icon(Icons.account_box_rounded),
-              title: Text('プロフィール'),
+            child: ListTile(
+              leading: Icon(
+                Icons.account_box_rounded,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+              title: Text('プロフィール', style: MyStyles.defaultText(context)),
             ),
           )
         ],
