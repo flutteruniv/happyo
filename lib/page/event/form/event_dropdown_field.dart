@@ -2,23 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:happyo/page/event/form/event_form_label.dart';
 import 'package:happyo/page/event/form/form_label_badge.dart';
 
-class EventTextField extends StatelessWidget {
+class EventDropdownField extends StatelessWidget {
   EventFormLabel? label;
   bool required;
-  TextEditingController? controller;
-  void Function(String)? onChanged;
-  int? maxLines;
-  int? maxLength;
-  String? Function(String?)? validator;
+  List<DropdownMenuItem<int>> items;
+  void Function(int?)? onChanged;
+  String? Function(int?)? validator;
 
-  EventTextField({
+  EventDropdownField({
     super.key,
     this.label,
     this.required = false,
-    this.controller,
+    required this.items,
     this.onChanged,
-    this.maxLines,
-    this.maxLength,
     this.validator,
   });
 
@@ -33,12 +29,10 @@ class EventTextField extends StatelessWidget {
                 required ? FormLabelBadge() : Container(),
               ])
             : Container(),
-        TextFormField(
-          autofocus: false,
-          controller: controller,
+        DropdownButtonFormField(
+          isExpanded: true,
+          items: items,
           onChanged: onChanged,
-          maxLines: maxLines,
-          maxLength: maxLength,
           validator: validator,
         ),
       ],

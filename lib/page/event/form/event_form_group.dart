@@ -13,13 +13,12 @@ class EventFormGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 18,
+      padding: const EdgeInsets.only(
+        top: 18,
       ),
       child: Column(
         children: [
           if (header != null) header!,
-          const Padding(padding: EdgeInsets.symmetric(vertical: 9)),
           ...children,
         ],
       ),

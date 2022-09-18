@@ -10,9 +10,11 @@ class EventFormGroupHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(vertical: 2),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: Theme.of(context).secondaryHeaderColor,
+        borderRadius: BorderRadius.circular(2),
       ),
       child: Text(
         text,

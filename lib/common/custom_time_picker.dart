@@ -45,7 +45,7 @@ class DatePicker {
     DateChangedCallback? onChanged,
     DateChangedCallback? onConfirm,
     DateCancelledCallback? onCancel,
-    locale: LocaleType.en,
+    locale: LocaleType.jp,
     DateTime? currentTime,
     DatePickerTheme? theme,
   }) async {
@@ -80,7 +80,7 @@ class DatePicker {
     DateChangedCallback? onChanged,
     DateChangedCallback? onConfirm,
     DateCancelledCallback? onCancel,
-    locale: LocaleType.en,
+    locale: LocaleType.jp,
     DateTime? currentTime,
     DatePickerTheme? theme,
   }) async {
@@ -113,7 +113,7 @@ class DatePicker {
     DateChangedCallback? onChanged,
     DateChangedCallback? onConfirm,
     DateCancelledCallback? onCancel,
-    locale: LocaleType.en,
+    locale: LocaleType.jp,
     DateTime? currentTime,
     DatePickerTheme? theme,
   }) async {
@@ -147,7 +147,7 @@ class DatePicker {
     DateChangedCallback? onChanged,
     DateChangedCallback? onConfirm,
     DateCancelledCallback? onCancel,
-    locale: LocaleType.en,
+    locale: LocaleType.jp,
     DateTime? currentTime,
     DatePickerTheme? theme,
   }) async {
@@ -181,7 +181,7 @@ class DatePicker {
     DateChangedCallback? onChanged,
     DateChangedCallback? onConfirm,
     DateCancelledCallback? onCancel,
-    locale: LocaleType.en,
+    locale: LocaleType.jp,
     BasePickerModel? pickerModel,
     DatePickerTheme? theme,
   }) async {

@@ -10,15 +10,17 @@ class EventNumberField extends StatelessWidget {
   Function(String)? onChanged;
   int? maxLines;
   TextInputType? keyboardType;
+  String? Function(String?)? validator;
 
   EventNumberField({
     super.key,
     this.label,
-    this.required = true,
+    this.required = false,
     this.controller,
     this.onChanged,
     this.maxLines,
     this.keyboardType,
+    this.validator,
   });
 
   @override
@@ -38,6 +40,7 @@ class EventNumberField extends StatelessWidget {
           maxLines: maxLines,
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          validator: validator,
         ),
       ],
     );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:happyo/common/format.dart';
 import 'package:happyo/page/event/form/event_form_label.dart';
+import 'package:happyo/page/event/form/form_label_badge.dart';
 import 'package:intl/intl.dart';
 
 class EventDatePicker extends StatefulWidget {
@@ -11,6 +12,7 @@ class EventDatePicker extends StatefulWidget {
   DateTime firstDate;
   DateTime lastDate;
   Function(DateTime?)? onChanged;
+  bool required;
 
   EventDatePicker({
     super.key,
@@ -19,6 +21,7 @@ class EventDatePicker extends StatefulWidget {
     required this.firstDate,
     required this.lastDate,
     required this.onChanged,
+    this.required = false,
   });
 
   @override
@@ -33,7 +36,12 @@ class _EventDatePickerState extends State<EventDatePicker> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.label != null) widget.label!,
+        Row(
+          children: [
+            if (widget.label != null) widget.label!,
+            widget.required ? FormLabelBadge() : Container(),
+          ],
+        ),
         TextButton(
           onPressed: _onPressed,
           child: SizedBox(
@@ -62,6 +70,15 @@ class _EventDatePickerState extends State<EventDatePicker> {
       );
     }
     if (widget.onChanged != null) {
+      if (widget.initialDate != null) {
+        currentDate = DateTime(
+          currentDate!.year,
+          currentDate!.month,
+          currentDate!.day,
+          widget.initialDate!.hour,
+          widget.initialDate!.minute,
+        );
+      }
       widget.onChanged!(currentDate);
     }
   }
