@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:happyo/common/my_syles.dart';
 import 'package:happyo/page/login_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -268,6 +269,25 @@ class AccountBlock extends StatelessWidget {
     return FirebaseAuth.instance.signOut();
   }
 
+  void deleteUser() async {
+    final user = FirebaseAuth.instance.currentUser;
+    final uid = user?.uid;
+    // userコレクションを削除
+    final msg =
+    await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+    // messagesサブコレクションを削除
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('messages')
+        .doc(uid)
+        .delete();
+    // ユーザーを削除
+    await user?.delete();
+    await FirebaseAuth.instance.signOut();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -280,6 +300,17 @@ class AccountBlock extends StatelessWidget {
           child: ListTile(
             title: Text(
               'ログアウト',
+              style: MyStyles.defaultText(context),
+            ),
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            deleteUser();
+          },
+          child: ListTile(
+            title: Text(
+              '退会',
               style: MyStyles.defaultText(context),
             ),
           ),
