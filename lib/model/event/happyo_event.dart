@@ -15,7 +15,7 @@ class HappyoEvent with _$HappyoEvent {
     String? id,
 
     // 件名
-    required String title,
+    String? title,
 
     // イメージ画像
     String? imageUrl,
