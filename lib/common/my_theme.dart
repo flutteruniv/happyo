@@ -23,7 +23,7 @@ abstract class MyTheme {
         onPrimary: unimplementedColor, // primaryに対してはっきりと判読できる色
         onSecondary: unimplementedColor, // secondaryに対してはっきりと判読できる色
         onSecondaryContainer:
-            unimplementedColor, // secondaryContainerに対してはっきりと判読できる色
+            blandColorDark, // secondaryContainerに対してはっきりと判読できる色
         onSurface: blandColorDark, // surfaceに対してはっきりと判読できる色
         onTertiary: unimplementedColor, // tertiaryに対してはっきりと判読できる色
         onTertiaryContainer:
@@ -63,7 +63,7 @@ abstract class MyTheme {
         onPrimary: unimplementedColor, // primaryに対してはっきりと判読できる色
         onSecondary: unimplementedColor, // secondaryに対してはっきりと判読できる色
         onSecondaryContainer:
-            unimplementedColor, // secondaryContainerに対してはっきりと判読できる色
+            blandColorLight, // secondaryContainerに対してはっきりと判読できる色
         onSurface: blandColorLight, // surfaceに対してはっきりと判読できる色
         onTertiary: unimplementedColor, // tertiaryに対してはっきりと判読できる色
         onTertiaryContainer:

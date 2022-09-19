@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:happyo/common/logger.dart';
 import 'package:happyo/common/routes.dart';
 import 'package:nil/nil.dart';
 
@@ -49,23 +50,6 @@ class _SearchPageState extends State<SearchPage> {
                 borderSide: const BorderSide(width: 0, style: BorderStyle.none),
               ),
             ),
-            onEditingComplete: () async {
-              if (_controller.text.isNotEmpty) {
-                final date =
-                    DateTime.now().toLocal().toIso8601String(); // 現在の日時
-                final uid = FirebaseAuth
-                    .instance.currentUser!.uid; // AddPostPage のデータを参照
-                await FirebaseFirestore.instance
-                    .collection('history') // コレクションID指定
-                    .doc() // ドキュメントID自動生成
-                    .set({'text': _controller.text, 'uid': uid, 'date': date});
-                _controller.clear();
-                setState(() {
-                  ishistoryVisible = _controller.text.isEmpty;
-                });
-                print(_controller.text);
-              }
-            },
           ),
         ),
         actions: [
@@ -82,12 +66,28 @@ class _SearchPageState extends State<SearchPage> {
                       borderRadius: BorderRadius.circular(5)),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
+                if (_controller.text.isNotEmpty) {
+                  final date =
+                      DateTime.now().toLocal().toIso8601String(); // 現在の日時
+                  final uid = FirebaseAuth
+                      .instance.currentUser!.uid; // AddPostPage のデータを参照
+                  await FirebaseFirestore.instance
+                      .collection('history') // コレクションID指定
+                      .doc() // ドキュメントID自動生成
+                      .set(
+                          {'text': _controller.text, 'uid': uid, 'date': date});
+                  setState(() {
+                    ishistoryVisible = _controller.text.isEmpty;
+                  });
+                  logger.debug(_controller.text);
+                }
                 Routes.pushNamed(
                   context,
                   Routes.searchResult,
                   args: _controller.text,
                 );
+                _controller.clear();
               },
               child: const Text('検索'),
             ),
