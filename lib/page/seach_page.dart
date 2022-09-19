@@ -35,56 +35,53 @@ class _SearchPageState extends State<SearchPage> {
       appBar: AppBar(
         // The search area here
         title: SizedBox(
-          height: 32,
-          child: SizedBox(
-            width: 300,
-            child: TextField(
-              controller: _controller,
-              textAlignVertical: TextAlignVertical.bottom,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.grey,
-                prefixIcon: const Icon(
-                  Icons.search,
-                  color: Colors.white,
-                ),
-                hintText: '検索キーワードを入力',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(4),
-                  borderSide: const BorderSide(
-                    width: 0,
-                    style: BorderStyle.none,
-                  ),
-                ),
+          height: 36,
+          child: TextField(
+            controller: _controller,
+            textAlignVertical: TextAlignVertical.bottom,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Theme.of(context).colorScheme.secondaryContainer,
+              prefixIcon: const Icon(Icons.search),
+              hintText: 'キーワードを入力',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: const BorderSide(width: 0, style: BorderStyle.none),
               ),
-              onEditingComplete: () async {
-                if (_controller.text.isNotEmpty) {
-                  final date =
-                      DateTime.now().toLocal().toIso8601String(); // 現在の日時
-                  final uid = FirebaseAuth
-                      .instance.currentUser!.uid; // AddPostPage のデータを参照
-                  await FirebaseFirestore.instance
-                      .collection('history') // コレクションID指定
-                      .doc() // ドキュメントID自動生成
-                      .set(
-                          {'text': _controller.text, 'uid': uid, 'date': date});
-                  _controller.clear();
-                  setState(() {
-                    ishistoryVisible = _controller.text.isEmpty;
-                  });
-                  print(_controller.text);
-                }
-              },
             ),
+            onEditingComplete: () async {
+              if (_controller.text.isNotEmpty) {
+                final date =
+                    DateTime.now().toLocal().toIso8601String(); // 現在の日時
+                final uid = FirebaseAuth
+                    .instance.currentUser!.uid; // AddPostPage のデータを参照
+                await FirebaseFirestore.instance
+                    .collection('history') // コレクションID指定
+                    .doc() // ドキュメントID自動生成
+                    .set({'text': _controller.text, 'uid': uid, 'date': date});
+                _controller.clear();
+                setState(() {
+                  ishistoryVisible = _controller.text.isEmpty;
+                });
+                print(_controller.text);
+              }
+            },
           ),
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+            padding:
+                const EdgeInsets.only(top: 10, bottom: 10, right: 12, left: 12),
             child: TextButton(
               style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all(
-                      Theme.of(context).colorScheme.onBackground)),
+                foregroundColor: MaterialStateProperty.all(Colors.white),
+                backgroundColor: MaterialStateProperty.all(
+                    Theme.of(context).colorScheme.tertiary),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
+                ),
+              ),
               onPressed: () {
                 Routes.pushNamed(
                   context,
