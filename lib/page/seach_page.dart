@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:happyo/common/routes.dart';
 import 'package:nil/nil.dart';
 
 class SearchPage extends StatefulWidget {
@@ -77,6 +78,24 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+            child: TextButton(
+              style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.all(
+                      Theme.of(context).colorScheme.onBackground)),
+              onPressed: () {
+                Routes.pushNamed(
+                  context,
+                  Routes.searchResult,
+                  args: _controller.text,
+                );
+              },
+              child: const Text('検索'),
+            ),
+          ),
+        ],
       ),
       body: ishistoryVisible
           ? Column(
