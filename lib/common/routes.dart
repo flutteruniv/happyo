@@ -3,11 +3,13 @@ import 'package:happyo/page/event/event_create_page.dart';
 import 'package:happyo/page/home_page.dart';
 import 'package:happyo/page/profile/profile_page.dart';
 import 'package:happyo/page/seach_page.dart';
+import 'package:happyo/page/search_result_page.dart';
 
 abstract class Routes {
   static const String index = '/';
   static const String profile = 'profile';
   static const String search = 'search';
+  static const String searchResult = 'search/result';
   static const String eventCreate = 'event/create';
 
   static Map<String, Widget Function(BuildContext)> get routes {
@@ -20,6 +22,9 @@ abstract class Routes {
       },
       search: (context) {
         return SearchPage();
+      },
+      searchResult: (context) {
+        return SearchResultPage();
       },
       eventCreate: (context) {
         return EventCreatePage();
