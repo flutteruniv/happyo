@@ -610,6 +610,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+<<<<<<< HEAD
   nested:
     dependency: transitive
     description:
@@ -627,6 +628,8 @@ packages:
     version: "1.1.1"
 =======
 >>>>>>> 96acc6b (videoPlayListの作成)
+=======
+>>>>>>> f98c3e4 (playList作成)
   package_config:
     dependency: transitive
     description:
@@ -655,6 +658,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.5.1"
+<<<<<<< HEAD
   provider:
 <<<<<<< HEAD
     dependency: transitive
@@ -666,6 +670,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.3"
+=======
+>>>>>>> f98c3e4 (playList作成)
   pub_semver:
     dependency: transitive
     description:

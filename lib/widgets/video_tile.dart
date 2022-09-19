@@ -3,8 +3,6 @@ import 'package:happyo/model/movie/movie.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:line_icons/line_icons.dart';
 
-import '../infrastructure/movie_repository.dart';
-
 class VideoTile extends HookConsumerWidget {
   const VideoTile(this.movie, {super.key});
 
