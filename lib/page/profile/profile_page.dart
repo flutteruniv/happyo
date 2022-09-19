@@ -90,11 +90,13 @@ class GuestProfileHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               TextButton(
-                onPressed: () {},
-                child: Text(
-                  '新規登録',
-                  // style: MyStyles.defaultText(context),
-                ),
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text('未実装です'),
+                    duration: Duration(milliseconds: 300),
+                  ));
+                },
+                child: Text('新規登録'),
                 style: MyStyles.defaultButton(context),
               ),
               TextButton(
@@ -192,7 +194,12 @@ class AppInfoBlock extends StatelessWidget {
       children: [
         InfoBlockHeader(text: 'アプリについて'),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('未実装です'),
+              duration: Duration(milliseconds: 300),
+            ));
+          },
           child: ListTile(
             title: Text(
               'お知らせ',
@@ -202,7 +209,12 @@ class AppInfoBlock extends StatelessWidget {
           ),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('未実装です'),
+              duration: Duration(milliseconds: 300),
+            ));
+          },
           child: ListTile(
             trailing: Icon(Icons.chevron_right_rounded),
             title: Text(
@@ -212,7 +224,12 @@ class AppInfoBlock extends StatelessWidget {
           ),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('未実装です'),
+              duration: Duration(milliseconds: 300),
+            ));
+          },
           child: ListTile(
             title: Text(
               'お問合せ/ご意見・ご要望',
@@ -233,7 +250,12 @@ class TermsInfoBlock extends StatelessWidget {
       children: [
         InfoBlockHeader(text: '規約'),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('未実装です'),
+              duration: Duration(milliseconds: 300),
+            ));
+          },
           child: ListTile(
             title: Text(
               '利用規約',
@@ -243,7 +265,12 @@ class TermsInfoBlock extends StatelessWidget {
           ),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('未実装です'),
+              duration: Duration(milliseconds: 300),
+            ));
+          },
           child: ListTile(
             title: Text(
               '個人情報保護',
@@ -274,7 +301,7 @@ class AccountBlock extends StatelessWidget {
     final uid = user?.uid;
     // userコレクションを削除
     final msg =
-    await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+        await FirebaseFirestore.instance.collection('users').doc(uid).delete();
     // messagesサブコレクションを削除
     await FirebaseFirestore.instance
         .collection('users')
@@ -286,7 +313,6 @@ class AccountBlock extends StatelessWidget {
     await user?.delete();
     await FirebaseAuth.instance.signOut();
   }
-
 
   @override
   Widget build(BuildContext context) {
