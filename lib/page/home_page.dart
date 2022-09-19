@@ -41,7 +41,9 @@ class HomePage extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Routes.pushNamed(context, Routes.search);
+            },
             icon: const Icon(Icons.search),
           ),
         ],
@@ -56,19 +58,7 @@ class HomePage extends StatelessWidget {
           Tab(text: 'AI2'),
         ],
         list: [
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, 'search');
-              },
-              child: Text(
-                "検索ページへ遷移",
-                style: TextStyle(fontSize: 32.0),
-              ),
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.onPrimary),
-            ),
-          ),
+          Center(),
           Center(
             child: Text('おすすめ', style: TextStyle(fontSize: 32.0)),
           ),
