@@ -4,6 +4,8 @@ import 'package:happyo/widgets/custom_tab_bar.dart';
 import 'package:happyo/widgets/play_list.dart';
 import 'package:happyo/widgets/side_menu.dart';
 
+import '../widgets/video_tile.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 

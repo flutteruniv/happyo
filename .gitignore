@@ -56,6 +56,10 @@ macos/firebase_app_id_file.json
 macos/Runner/GoogleService-Info.plist
 macos/Flutter/GeneratedPluginRegistrant.swift
 ios/GoogleService-Info.plist
+<<<<<<< HEAD
+=======
+
+>>>>>>> f98c3e4126f059743406c945d76ca3ca4b69c37f
 
 # Freezed
 *.freezed.dart
