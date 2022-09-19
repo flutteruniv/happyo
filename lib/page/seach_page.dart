@@ -107,51 +107,46 @@ class _SearchPageState extends State<SearchPage> {
                 FutureBuilder<QuerySnapshot>(
                   // 投稿メッセージ一覧を取得（非同期処理）
                   // 投稿日時でソート
-                  future: FirebaseFirestore.instance
-                      .collection('history')
-                      .orderBy('date', descending: true)
-                      .limit(6)
-                      .get(),
-                  builder: (context, snapshot) {
+                  future: _getSearchKeywordHistory(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
                     // データが取得できた場合
                     if (snapshot.hasData) {
-                      final List<DocumentSnapshot> documents =
-                          snapshot.data!.docs;
+                      final documents = snapshot.data!.docs;
                       // 取得した投稿メッセージ一覧を元にリスト表示
                       return ListView(
                         shrinkWrap: true,
                         itemExtent: 34,
                         children: documents.map((document) {
-                          return InkWell(
-                            onTap: () {
-                              FirebaseFirestore.instance
-                                  .collection('history')
-                                  .doc(document.id)
-                                  .get()
-                                  .then((DocumentSnapshot snapshot) {
-                                _controller.text = snapshot.get('text');
-                                print(_controller.text.toString());
-                              });
-                              setState(() {});
-                            },
-                            child: ListTile(
-                              title: Text(document['text']),
-                              // 自分の投稿メッセージの場合は削除ボタンを表示
-                              trailing: document['uid'] ==
-                                      FirebaseAuth.instance.currentUser!.uid
-                                  ? IconButton(
-                                      icon: const Icon(Icons.clear),
-                                      onPressed: () async {
-                                        // 投稿メッセージのドキュメントを削除
-                                        await FirebaseFirestore.instance
-                                            .collection('history')
-                                            .doc(document.id)
-                                            .delete();
-                                        setState(() {});
-                                      },
-                                    )
-                                  : nil,
-                              leading: const Icon(Icons.search),
+                          return ListTile(
+                            title: InkWell(
+                              onTap: () {
+                                FirebaseFirestore.instance
+                                    .collection('history')
+                                    .doc(document.id)
+                                    .get()
+                                    .then((DocumentSnapshot snapshot) {
+                                  _controller.text = snapshot.get('text');
+                                  logger.debug(_controller.text.toString());
+                                });
+                                setState(() {});
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(document['text']),
+                              ),
+                            ),
+                            // 自分の投稿メッセージの場合は削除ボタンを表示
+                            trailing: IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () async {
+                                // 投稿メッセージのドキュメントを削除
+                                await FirebaseFirestore.instance
+                                    .collection('history')
+                                    .doc(document.id)
+                                    .delete();
+                                setState(() {});
+                              },
                             ),
                           );
                         }).toList(),
@@ -167,5 +162,15 @@ class _SearchPageState extends State<SearchPage> {
             )
           : nil,
     );
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> _getSearchKeywordHistory() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('history')
+        .where("uid", isEqualTo: user.uid)
+        .orderBy('date', descending: true)
+        .limit(6)
+        .get();
+    return snapshot;
   }
 }
