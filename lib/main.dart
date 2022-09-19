@@ -16,10 +16,6 @@ Future<void> main() async {
   } catch (e) {
     logger.error("application initialize error: ", args: e);
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> f98c3e4126f059743406c945d76ca3ca4b69c37f
   runApp(
     const ProviderScope(child: MyApp()),
   );

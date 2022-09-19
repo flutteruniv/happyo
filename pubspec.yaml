@@ -51,8 +51,6 @@ dependencies:
   json_annotation: ^4.6.0
   line_icons: ^2.0.1
   hooks_riverpod: ^1.0.4
-<<<<<<< HEAD
-  provider: ^6.0.3
   flutter_hooks: ^0.18.5+1
 
   image_picker: ^0.8.5+3
@@ -60,9 +58,6 @@ dependencies:
   flutter_datetime_picker: ^1.5.1
 
   nil: ^1.1.1
-=======
-  flutter_hooks: ^0.18.5+1
->>>>>>> f98c3e4126f059743406c945d76ca3ca4b69c37f
 
 dev_dependencies:
   flutter_test:
