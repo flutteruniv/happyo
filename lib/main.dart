@@ -15,6 +15,7 @@ Future<void> main() async {
   } catch (e) {
     logger.error("application initialize error: ", args: e);
   }
+
   runApp(
     const ProviderScope(child: MyApp()),
   );
