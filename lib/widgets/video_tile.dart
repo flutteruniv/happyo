@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:happyo/common/my_syles.dart';
 import 'package:happyo/model/movie/movie.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:line_icons/line_icons.dart';
@@ -36,16 +37,11 @@ class VideoTile extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(movie.title.toString(),
-                        maxLines: 3,
-                        style: const TextStyle(
-                          height: 1.1,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        )),
+                        maxLines: 3, style: MyStyles.tileTitleText(context)),
                     Text(
                       movie.hostName.toString(),
                       maxLines: 1,
-                      style: const TextStyle(fontSize: 10),
+                      style: MyStyles.tileHostNameText(context),
                     ),
                     const SizedBox(height: 4),
                     SizedBox(
@@ -60,7 +56,7 @@ class VideoTile extends HookConsumerWidget {
                             padding: const EdgeInsets.only(right: 4.0),
                             child: Text(
                               '#${movie.tag![index].toString()}',
-                              style: const TextStyle(fontSize: 12),
+                              style: MyStyles.tileTagNameText(context),
                             ),
                           );
                         },
