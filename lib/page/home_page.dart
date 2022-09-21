@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:happyo/common/routes.dart';
 import 'package:happyo/widgets/custom_tab_bar.dart';
+
 import 'package:happyo/widgets/side_menu.dart';
 
 class HomePage extends StatelessWidget {
@@ -58,7 +59,9 @@ class HomePage extends StatelessWidget {
           Tab(text: 'AI2'),
         ],
         list: [
-          Center(),
+          Center(
+            child: Text('ネットワーク', style: TextStyle(fontSize: 32.0)),
+          ),
           Center(
             child: Text('おすすめ', style: TextStyle(fontSize: 32.0)),
           ),
