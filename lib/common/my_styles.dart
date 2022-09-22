@@ -13,7 +13,7 @@ abstract class MyStyles {
       height: 1.1,
       color: Theme.of(context).colorScheme.onBackground,
       fontWeight: FontWeight.bold,
-      fontSize: 15,
+      fontSize: 12,
     );
   }
 
@@ -28,7 +28,7 @@ abstract class MyStyles {
   // ビデオタイルの動画タグ名テキスト
   static TextStyle tileTagNameText(BuildContext context) {
     return TextStyle(
-      fontSize: 12,
+      fontSize: 11,
       color: Theme.of(context).colorScheme.onBackground,
     );
   }
