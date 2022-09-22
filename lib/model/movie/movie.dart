@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:happyo/common/time_stamp_converter.dart';
 
 part 'movie.freezed.dart';
 part 'movie.g.dart';
@@ -34,7 +36,7 @@ class Movie with _$Movie {
     List<String>? category,
 
     // 動画投稿日時
-    DateTime? postedAt,
+    @TimestampConverter() DateTime? postedAt,
 
     // 動画タイトル
     String? title,
