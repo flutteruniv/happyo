@@ -43,7 +43,7 @@ abstract class MyStyles {
     );
   }
 
-  // VideoPlayPageのホスト名テキスト
+  // VideoPlayPageの”+フォローする”ボタン
   static TextStyle followButtonText(BuildContext context) {
     return TextStyle(
       fontSize: 10,
