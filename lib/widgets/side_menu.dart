@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:happyo/common/my_syles.dart';
+import 'package:happyo/common/my_styles.dart';
 import 'package:happyo/common/routes.dart';
 
 class SideMenu extends StatelessWidget {

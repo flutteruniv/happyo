@@ -5,6 +5,7 @@ import 'package:happyo/common/my_theme.dart';
 import 'package:happyo/common/logger.dart';
 import 'package:happyo/common/routes.dart';
 import 'package:happyo/firebase_options.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 Future<void> main() async {
   try {
@@ -15,7 +16,9 @@ Future<void> main() async {
   } catch (e) {
     logger.error("application initialize error: ", args: e);
   }
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(child: MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
