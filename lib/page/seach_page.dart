@@ -14,7 +14,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _controller = TextEditingController();
-  final user = FirebaseAuth.instance.currentUser!;
+  final user = FirebaseAuth.instance.currentUser;
 
   //検索バーに入力されていなければtrue → 検索履歴を表示する
   bool ishistoryVisible = true;
@@ -66,7 +66,7 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               onPressed: () async {
-                if (_controller.text.isNotEmpty) {
+                if (_controller.text.isNotEmpty && user != null) {
                   final date =
                       DateTime.now().toLocal().toIso8601String(); // 現在の日時
                   final uid = FirebaseAuth
@@ -96,7 +96,7 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ],
       ),
-      body: ishistoryVisible
+      body: ishistoryVisible && user != null
           ? Column(
               children: [
                 Container(
@@ -169,7 +169,7 @@ class _SearchPageState extends State<SearchPage> {
   Future<QuerySnapshot<Map<String, dynamic>>> _getSearchKeywordHistory() async {
     final snapshot = await FirebaseFirestore.instance
         .collection('history')
-        .where("uid", isEqualTo: user.uid)
+        .where("uid", isEqualTo: user!.uid)
         .orderBy('date', descending: true)
         .limit(6)
         .get();
