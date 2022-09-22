@@ -51,7 +51,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
           },
           showSelectedLabels: true,
           unselectedItemColor: Theme.of(context).colorScheme.onBackground,
-          selectedItemColor: Theme.of(context).colorScheme.onPrimary,
+          selectedItemColor: Theme.of(context).colorScheme.tertiary,
           items: navBarItemList
               .map((NavBarItem navBarItem) => BottomNavigationBarItem(
                     backgroundColor: Theme.of(context).colorScheme.background,
