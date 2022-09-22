@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:happyo/common/my_syles.dart';
+import 'package:happyo/common/my_styles.dart';
 import 'package:happyo/page/login_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

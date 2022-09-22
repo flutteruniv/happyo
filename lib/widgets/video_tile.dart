@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:happyo/common/my_syles.dart';
+import 'package:happyo/common/my_styles.dart';
 import 'package:happyo/model/movie/movie.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:line_icons/line_icons.dart';
