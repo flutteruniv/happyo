@@ -15,6 +15,7 @@ class SideMenu extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
+              Routes.pop(context);
               Routes.pushNamed(context, Routes.profile);
             },
             child: ListTile(

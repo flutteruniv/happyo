@@ -42,87 +42,56 @@ class VideoTile extends HookConsumerWidget {
                     vertical: 3,
                   ),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(movie.title.toString(),
-                          maxLines: 3, style: MyStyles.tileTitleText(context)),
-                      Text(
-                        movie.hostName.toString(),
-                        maxLines: 1,
-                        style: MyStyles.font10(context),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(movie.title.toString(),
+                              maxLines: 3,
+                              style: MyStyles.tileTitleText(context)),
+                          Text(
+                            movie.hostName.toString(),
+                            maxLines: 1,
+                            style: MyStyles.font10(context),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          if (movie.tag != null)
+                            for (var tag in movie.tag!)
+                              Padding(
+                                padding: const EdgeInsets.only(right: 4.0),
+                                child: Text(
+                                  '#${tag!.toString()}',
+                                  style: MyStyles.tileTagNameText(context),
+                                ),
+                              ),
+                        ],
                       ),
                       const SizedBox(height: 4),
-                      SizedBox(
-                        height: 14,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const ClampingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: movie.tag!.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 4.0),
-                              child: Text(
-                                '#${movie.tag![index].toString()}',
-                                style: MyStyles.tileTagNameText(context),
-                              ),
-                            );
-                          },
-                        ),
-                      )
                     ],
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(movie.title.toString(),
-                            maxLines: 3,
-                            style: MyStyles.tileTitleText(context)),
-                        Text(
-                          movie.hostName.toString(),
-                          maxLines: 1,
-                          style: MyStyles.tileHostNameText(context),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        if (movie.tag != null)
-                          for (var tag in movie.tag!)
-                            Padding(
-                              padding: const EdgeInsets.only(right: 4.0),
-                              child: Text(
-                                '#${tag!.toString()}',
-                                style: MyStyles.tileTagNameText(context),
-                              ),
+                trailing: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      movie.videoHolder == 0
+                          ? const Icon(Icons.download_rounded)
+                          : Column(
+                              children: [
+                                Column(
+                                  children: const [
+                                    Text('You', style: TextStyle(fontSize: 9)),
+                                    Text('Tube', style: TextStyle(fontSize: 9)),
+                                  ],
+                                ),
+                              ],
                             ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                  ],
-                ),
+                    ]),
               ),
-              trailing: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    movie.videoHolder == 0
-                        ? const Icon(Icons.download_rounded)
-                        : Column(
-                            children: [
-                              Column(
-                                children: const [
-                                  Text('You', style: TextStyle(fontSize: 9)),
-                                  Text('Tube', style: TextStyle(fontSize: 9)),
-                                ],
-                              ),
-                            ],
-                          ),
-                  ]),
             ),
           ],
         ),

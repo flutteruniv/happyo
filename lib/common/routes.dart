@@ -5,7 +5,7 @@ import 'package:happyo/page/profile/profile_page.dart';
 import 'package:happyo/page/seach_page.dart';
 import 'package:happyo/page/search_result_page.dart';
 import 'package:happyo/page/video_play_page.dart';
-mport 'package:happyo/widgets/custom_nav_bar.dart';
+import 'package:happyo/widgets/custom_nav_bar.dart';
 
 abstract class Routes {
   static const String home = '/home';

@@ -58,8 +58,7 @@ class _SearchPageState extends State<SearchPage> {
                 const EdgeInsets.only(top: 10, bottom: 10, right: 12, left: 12),
             child: TextButton(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all(Colors.white),
-                backgroundColor: MaterialStateProperty.all(
+                foregroundColor: MaterialStateProperty.all(
                     Theme.of(context).colorScheme.tertiary),
                 shape: MaterialStateProperty.all(
                   RoundedRectangleBorder(
@@ -89,7 +88,10 @@ class _SearchPageState extends State<SearchPage> {
                 );
                 _controller.clear();
               },
-              child: const Text('検索'),
+              child: const Text(
+                '検索',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ],
