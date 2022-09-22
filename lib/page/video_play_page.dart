@@ -70,7 +70,6 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
           ),
         ],
       ),
-      drawer: SideMenu(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
