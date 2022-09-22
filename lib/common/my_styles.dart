@@ -13,12 +13,12 @@ abstract class MyStyles {
       height: 1.1,
       color: Theme.of(context).colorScheme.onBackground,
       fontWeight: FontWeight.bold,
-      fontSize: 15,
+      fontSize: 14,
     );
   }
 
-  // ビデオタイルの動画ホスト名テキスト
-  static TextStyle tileHostNameText(BuildContext context) {
+  // ビデオタイルの動画ホスト名テキスト、VideoPlayPageの視聴回数、日時、タグ、アイコン下テキスト
+  static TextStyle font10(BuildContext context) {
     return TextStyle(
       fontSize: 10,
       color: Theme.of(context).colorScheme.onBackground,
@@ -30,6 +30,25 @@ abstract class MyStyles {
     return TextStyle(
       fontSize: 12,
       color: Theme.of(context).colorScheme.onBackground,
+    );
+  }
+
+  // VideoPlayPageのホスト名テキスト
+  static TextStyle hostText(BuildContext context) {
+    return TextStyle(
+      fontSize: 14,
+      height: 0,
+      fontWeight: FontWeight.bold,
+      color: Theme.of(context).colorScheme.onBackground,
+    );
+  }
+
+  // VideoPlayPageのホスト名テキスト
+  static TextStyle followButtonText(BuildContext context) {
+    return TextStyle(
+      fontSize: 10,
+      fontWeight: FontWeight.bold,
+      color: Theme.of(context).colorScheme.tertiary,
     );
   }
 
