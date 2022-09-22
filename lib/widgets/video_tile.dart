@@ -3,7 +3,6 @@ import 'package:happyo/common/my_styles.dart';
 import 'package:happyo/common/routes.dart';
 import 'package:happyo/model/movie/movie.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:line_icons/line_icons.dart';
 
 class VideoTile extends HookConsumerWidget {
   const VideoTile(this.movie, {super.key});
@@ -74,17 +73,56 @@ class VideoTile extends HookConsumerWidget {
                     ],
                   ),
                 ),
-                trailing: Column(
-                  //アイコンがリストタイルの中央に配置
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // videoHolder (0:Happyo, 1:YouTube)
-                    movie.videoHolder == 0
-                        ? const Icon(Icons.movie)
-                        : const Icon(LineIcons.youtube),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(movie.title.toString(),
+                            maxLines: 3,
+                            style: MyStyles.tileTitleText(context)),
+                        Text(
+                          movie.hostName.toString(),
+                          maxLines: 1,
+                          style: MyStyles.tileHostNameText(context),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        if (movie.tag != null)
+                          for (var tag in movie.tag!)
+                            Padding(
+                              padding: const EdgeInsets.only(right: 4.0),
+                              child: Text(
+                                '#${tag!.toString()}',
+                                style: MyStyles.tileTagNameText(context),
+                              ),
+                            ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
                   ],
                 ),
               ),
+              trailing: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    movie.videoHolder == 0
+                        ? const Icon(Icons.download_rounded)
+                        : Column(
+                            children: [
+                              Column(
+                                children: const [
+                                  Text('You', style: TextStyle(fontSize: 9)),
+                                  Text('Tube', style: TextStyle(fontSize: 9)),
+                                ],
+                              ),
+                            ],
+                          ),
+                  ]),
             ),
           ],
         ),
