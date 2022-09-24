@@ -1,0 +1,38 @@
+movie: # Collection
+	id: string	# Doc
+		id: string
+		title: string
+		categoryList: array<string>
+		thumbnailImage: string
+		downloadUrl: string
+		streamingUrl: string
+		platform: enum(string)
+		hostId: string
+		hostName: string
+		tagList: array<string>
+		likes: int
+		views: int
+		createdAt: datetime
+		createdBy: string
+		updatedAt: datetime
+		updatedBy: string
+		deletedAt: datetime
+		deletedBy: string
+
+userMovieList: # Collection
+	id: string # Doc
+		id: string
+		userId: string
+		listName: string
+		movieList: array<movie>
+
+homeMovieList: #Collection
+	id: string #Doc
+		id: string
+		listName: string
+		movieList: array<movie>
+
+likes: #Collection
+	movieId: string #Doc
+		userId: string
+		isLike: bool(@Default false)

@@ -1,7 +1,6 @@
+import 'package:happyo/infrastructure/repository/movie_repository.dart';
+import 'package:happyo/model/movie/movie.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../model/movie/movie.dart';
-import 'movie_repository.dart';
 
 final playListNotifierProvider =
     StateNotifierProvider<PlayListNotifier, List<Movie>?>((ref) {
