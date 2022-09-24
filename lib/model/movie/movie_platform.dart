@@ -1,0 +1,4 @@
+enum MoviePlatform {
+  happyo,
+  youtube,
+}

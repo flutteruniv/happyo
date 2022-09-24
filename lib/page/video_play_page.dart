@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/basic.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:happyo/common/format.dart';
 import 'package:happyo/common/my_styles.dart';
+import 'package:happyo/common/routes.dart';
 import 'package:happyo/model/movie/movie.dart';
+import 'package:happyo/model/movie/movie_platform.dart';
 import 'package:happyo/widgets/play_list.dart';
+import 'package:happyo/widgets/youtube_player.dart';
 import 'package:intl/intl.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-
-import '../common/format.dart';
-import '../common/routes.dart';
-import '../widgets/side_menu.dart';
-import '../widgets/youtube_player.dart';
+import 'package:share_plus/share_plus.dart';
 
 class VideoPlayPage extends StatefulWidget {
   const VideoPlayPage({super.key});
@@ -106,14 +102,8 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
                         );
                       },
                       icon: isVisible
-                          ? const Icon(
-                              Icons.keyboard_arrow_down,
-                              size: 20,
-                            )
-                          : const Icon(
-                              Icons.keyboard_arrow_up,
-                              size: 20,
-                            ),
+                          ? const Icon(Icons.keyboard_arrow_down, size: 20)
+                          : const Icon(Icons.keyboard_arrow_up, size: 20),
                     ),
                   ],
                 ),
@@ -138,20 +128,15 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
                       ),
                       SizedBox(
                         height: 16,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const ClampingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: movie.tag!.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 4.0),
-                              child: Text(
-                                '#${movie.tag![index].toString()}',
-                                style: MyStyles.font10(context),
-                              ),
-                            );
-                          },
+                        child: Row(
+                          children: [
+                            if (movie.tag != null)
+                              for (var tag in movie.tag!)
+                                Text(
+                                  '#${tag.toString()}',
+                                  style: MyStyles.font10(context),
+                                ),
+                          ],
                         ),
                       ),
                       const SizedBox(
@@ -163,8 +148,8 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              InkWell(
-                                onTap: () {
+                              TextButton(
+                                onPressed: () {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
                                     content: Text('未実装です'),
@@ -181,8 +166,8 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
                                   ],
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {
+                              TextButton(
+                                onPressed: () {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
                                     content: Text('未実装です'),
@@ -199,13 +184,12 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
                                   ],
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                    content: Text('未実装です'),
-                                    duration: Duration(milliseconds: 300),
-                                  ));
+                              TextButton(
+                                onPressed: () async {
+                                  await Share.share(
+                                    "https://m.youtube.com/watch?v=${movie.youtubeId.toString()}",
+                                    subject: movie.title,
+                                  );
                                 },
                                 child: Column(
                                   children: [
@@ -217,14 +201,13 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
                                   ],
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                    content: Text('未実装です'),
-                                    duration: Duration(milliseconds: 300),
-                                  ));
-                                },
+                              TextButton(
+                                onPressed:
+                                    movie.moviePlatform == MoviePlatform.happyo
+                                        ? () {
+                                            // TODO: 未実装
+                                          }
+                                        : null,
                                 child: Column(
                                   children: [
                                     const Icon(Icons.download),
@@ -234,7 +217,7 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
                                     )
                                   ],
                                 ),
-                              ),
+                              )
                             ],
                           ),
                         ),
@@ -265,26 +248,29 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
                                 style: MyStyles.hostText(context),
                               ),
                             ),
-                            SizedBox(
-                              height: 16,
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 2,
-                                    horizontal: 8,
+                            if (movie.moviePlatform == MoviePlatform.happyo)
+                              SizedBox(
+                                height: 16,
+                                child: TextButton(
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 2,
+                                      horizontal: 8,
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      content: Text('未実装です'),
+                                      duration: Duration(milliseconds: 300),
+                                    ));
+                                  },
+                                  child: Text(
+                                    '+ フォローする',
+                                    style: MyStyles.followButtonText(context),
                                   ),
                                 ),
-                                onPressed: () {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                    content: Text('未実装です'),
-                                    duration: Duration(milliseconds: 300),
-                                  ));
-                                },
-                                child: Text('+ フォローする',
-                                    style: MyStyles.followButtonText(context)),
                               ),
-                            ),
                           ],
                         ),
                       ),

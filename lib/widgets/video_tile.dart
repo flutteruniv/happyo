@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:happyo/common/my_styles.dart';
 import 'package:happyo/common/routes.dart';
 import 'package:happyo/model/movie/movie.dart';
+import 'package:happyo/model/movie/movie_platform.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class VideoTile extends HookConsumerWidget {
@@ -78,7 +79,7 @@ class VideoTile extends HookConsumerWidget {
                 trailing: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      movie.videoHolder == 0
+                      movie.moviePlatform == MoviePlatform.happyo
                           ? const Icon(Icons.download_rounded)
                           : Column(
                               children: [

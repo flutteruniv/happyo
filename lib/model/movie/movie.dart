@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:happyo/common/time_stamp_converter.dart';
+import 'package:happyo/model/movie/movie_platform.dart';
 
 part 'movie.freezed.dart';
 part 'movie.g.dart';
@@ -29,8 +30,8 @@ class Movie with _$Movie {
     // ダウンロードURL
     String? downloadUrl,
 
-    // コンテンツ所持者(0:Happyo, 1:YouTube)
-    int? videoHolder,
+    // コンテンツ所持者
+    MoviePlatform? moviePlatform,
 
     // 動画カテゴリ
     List<String>? category,

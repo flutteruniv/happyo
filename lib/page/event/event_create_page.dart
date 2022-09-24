@@ -530,7 +530,8 @@ class EventCreatePageState extends State<EventCreatePage> {
   }
 
   _updateVideoPlatform(int? text) {
-    event = event.copyWith(videoHolder: 0);
+    // TODO: change type to VideoHolder
+    // event = event.copyWith(videoHolder: 0);
   }
 
   _updateVideoDeliveryType(int? value) {
