@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_tab_bar.dart';
+import 'package:happyo/model/movie/movie.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class YouTubePlayer extends StatelessWidget {
-  const YouTubePlayer({Key? key, required this.videoId}) : super(key: key);
-
-  //YouTube動画のID
-  final String videoId;
+  static const String urlPrefix = "https://www.youtube.com/watch?v=";
+  late String videoId;
+  YouTubePlayer({Key? key, required Movie movie}) : super(key: key) {
+    videoId = extractYouTubeId(movie.streamingUrl!);
+  }
 
   @override
   Widget build(BuildContext context) {
     var ytcl = YoutubePlayerController(
-      // initialVideoId: 'I6TpDuSFbTc',
       initialVideoId: videoId,
       params: YoutubePlayerParams(
         showControls: true,
@@ -23,5 +23,9 @@ class YouTubePlayer extends StatelessWidget {
       controller: ytcl,
       child: const YoutubePlayerIFrame(),
     );
+  }
+
+  String extractYouTubeId(String url) {
+    return url.replaceFirst(urlPrefix, '');
   }
 }

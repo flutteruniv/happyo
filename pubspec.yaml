@@ -59,6 +59,9 @@ dependencies:
 
   nil: ^1.1.1
 
+  share_plus: ^4.4.0
+  shared_preferences: ^2.0.15
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

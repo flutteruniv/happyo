@@ -1,35 +1,40 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/basic.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:happyo/common/format.dart';
 import 'package:happyo/common/my_styles.dart';
+import 'package:happyo/common/routes.dart';
+import 'package:happyo/infrastructure/state/movie_state_notifier_provider.dart';
 import 'package:happyo/model/movie/movie.dart';
+import 'package:happyo/model/movie/movie_platform.dart';
 import 'package:happyo/widgets/play_list.dart';
+import 'package:happyo/widgets/youtube_player.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:share_plus/share_plus.dart';
 
-import '../common/format.dart';
-import '../common/routes.dart';
-import '../widgets/side_menu.dart';
-import '../widgets/youtube_player.dart';
+class VideoPlayPage extends StatefulHookConsumerWidget {
+  bool showDescription;
 
-class VideoPlayPage extends StatefulWidget {
-  const VideoPlayPage({super.key});
+  VideoPlayPage({super.key, this.showDescription = true});
 
   @override
-  State<VideoPlayPage> createState() => _VideoPlayPageState();
+  ConsumerState createState() => _VideoPlayPageState();
 }
 
-class _VideoPlayPageState extends State<VideoPlayPage> {
-  bool isVisible = true;
+class _VideoPlayPageState extends ConsumerState<VideoPlayPage> {
+  // bool isLike = false;
+  late Movie movieState;
+  late MovieNotifier movieNotifier;
 
   void toggleShowText() {
-    isVisible = !isVisible;
+    widget.showDescription = !widget.showDescription;
   }
 
   @override
   Widget build(BuildContext context) {
-    Movie? movie = Routes.getArgs(context);
+    movieState = ref.watch(movieStateNotifierProvider)!;
+    movieNotifier = ref.watch(movieStateNotifierProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -74,7 +79,7 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           YouTubePlayer(
-            videoId: '${movie!.youtubeId}',
+            movie: movieState,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -86,7 +91,7 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
                   children: [
                     Expanded(
                       child: Text(
-                        '${movie.title}',
+                        movieState.title.toString(),
                         maxLines: 2,
                         style: TextStyle(
                           fontSize: 16,
@@ -99,26 +104,18 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
                       padding: EdgeInsets.zero,
                       alignment: Alignment.topRight,
                       onPressed: () {
-                        setState(
-                          () {
-                            toggleShowText();
-                          },
-                        );
+                        setState(() {
+                          toggleShowText();
+                        });
                       },
-                      icon: isVisible
-                          ? const Icon(
-                              Icons.keyboard_arrow_down,
-                              size: 20,
-                            )
-                          : const Icon(
-                              Icons.keyboard_arrow_up,
-                              size: 20,
-                            ),
+                      icon: widget.showDescription
+                          ? const Icon(Icons.keyboard_arrow_down, size: 20)
+                          : const Icon(Icons.keyboard_arrow_up, size: 20),
                     ),
                   ],
                 ),
                 Visibility(
-                  visible: isVisible,
+                  visible: widget.showDescription,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -126,32 +123,27 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${movie.views}回視聴',
+                            '${movieState.views}回視聴',
                             style: MyStyles.font10(context),
                           ),
                           Text(
                             DateFormat(Format.DATETIME_YYYYMMDDHHMM)
-                                .format(movie.postedAt!),
+                                .format(movieState.createdAt!),
                             style: MyStyles.font10(context),
                           ),
                         ],
                       ),
                       SizedBox(
                         height: 16,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const ClampingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: movie.tag!.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 4.0),
-                              child: Text(
-                                '#${movie.tag![index].toString()}',
-                                style: MyStyles.font10(context),
-                              ),
-                            );
-                          },
+                        child: Row(
+                          children: [
+                            if (movieState.tagList != null)
+                              for (var tag in movieState.tagList!)
+                                Text(
+                                  '#${tag.toString()}',
+                                  style: MyStyles.font10(context),
+                                ),
+                          ],
                         ),
                       ),
                       const SizedBox(
@@ -163,31 +155,77 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              InkWell(
-                                onTap: () {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                    content: Text('未実装です'),
-                                    duration: Duration(milliseconds: 300),
-                                  ));
+                              FutureBuilder(
+                                future: movieNotifier.isLike(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  if (snapshot.hasData) {
+                                    if (snapshot.data as bool) {
+                                      return TextButton(
+                                        onPressed: () async {
+                                          if (FirebaseAuth
+                                                  .instance.currentUser !=
+                                              null) {
+                                            onUnlike(movieState);
+                                            setState(() {});
+                                          } else {
+                                            // TODO: 未ログインの処理
+                                          }
+                                        },
+                                        child: Column(
+                                          children: [
+                                            Icon(
+                                              Icons.thumb_up_alt,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiary,
+                                            ),
+                                            Text(
+                                              '${movieState.likes}',
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiary,
+                                                fontSize:
+                                                    MyStyles.font10(context)
+                                                        .fontSize,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                  }
+                                  return TextButton(
+                                    onPressed: () async {
+                                      if (FirebaseAuth.instance.currentUser !=
+                                          null) {
+                                        onLike(movieState);
+                                        setState(() {});
+                                      } else {
+                                        // TODO: 未ログインの処理
+                                      }
+                                    },
+                                    child: Column(
+                                      children: [
+                                        const Icon(Icons.thumb_up_alt_outlined),
+                                        Text(
+                                          movieState.likes.toString(),
+                                          style: MyStyles.font10(context),
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 },
-                                child: Column(
-                                  children: [
-                                    const Icon(Icons.thumb_up),
-                                    Text(
-                                      '${movie.likes}',
-                                      style: MyStyles.font10(context),
-                                    )
-                                  ],
-                                ),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                    content: Text('未実装です'),
-                                    duration: Duration(milliseconds: 300),
-                                  ));
+                              TextButton(
+                                onPressed: () {
+                                  if (FirebaseAuth.instance.currentUser !=
+                                      null) {
+                                    // TODO: マイリストの処理
+                                  } else {
+                                    // TODO: 未ログインの処理
+                                  }
                                 },
                                 child: Column(
                                   children: [
@@ -199,13 +237,12 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
                                   ],
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                    content: Text('未実装です'),
-                                    duration: Duration(milliseconds: 300),
-                                  ));
+                              TextButton(
+                                onPressed: () async {
+                                  await Share.share(
+                                    movieState.streamingUrl.toString(),
+                                    subject: movieState.title,
+                                  );
                                 },
                                 child: Column(
                                   children: [
@@ -217,14 +254,13 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
                                   ],
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                    content: Text('未実装です'),
-                                    duration: Duration(milliseconds: 300),
-                                  ));
-                                },
+                              TextButton(
+                                onPressed:
+                                    movieState.platform == MoviePlatform.happyo
+                                        ? () {
+                                            // TODO: 未実装
+                                          }
+                                        : null,
                                 child: Column(
                                   children: [
                                     const Icon(Icons.download),
@@ -234,7 +270,7 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
                                     )
                                   ],
                                 ),
-                              ),
+                              )
                             ],
                           ),
                         ),
@@ -261,30 +297,33 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
                                 ));
                               },
                               child: Text(
-                                '${movie.hostName}',
+                                movieState.hostName.toString(),
                                 style: MyStyles.hostText(context),
                               ),
                             ),
-                            SizedBox(
-                              height: 16,
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 2,
-                                    horizontal: 8,
+                            if (movieState.platform == MoviePlatform.happyo)
+                              SizedBox(
+                                height: 16,
+                                child: TextButton(
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 2,
+                                      horizontal: 8,
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      content: Text('未実装です'),
+                                      duration: Duration(milliseconds: 300),
+                                    ));
+                                  },
+                                  child: Text(
+                                    '+ フォローする',
+                                    style: MyStyles.followButtonText(context),
                                   ),
                                 ),
-                                onPressed: () {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                    content: Text('未実装です'),
-                                    duration: Duration(milliseconds: 300),
-                                  ));
-                                },
-                                child: Text('+ フォローする',
-                                    style: MyStyles.followButtonText(context)),
                               ),
-                            ),
                           ],
                         ),
                       ),
@@ -302,5 +341,37 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
         ],
       ),
     );
+  }
+
+  void onLike(Movie movie) async {
+    switch (movie.platform) {
+      case MoviePlatform.youtube:
+        // ref.read(movieStateNotifierProvider.notifier).like();
+        movieNotifier.like();
+        break;
+      case MoviePlatform.happyo:
+        // TODO: Handle this case.
+        break;
+      default:
+        // ref.read(movieStateNotifierProvider.notifier).like();
+        movieNotifier.like();
+        break;
+    }
+  }
+
+  void onUnlike(Movie movie) async {
+    switch (movie.platform) {
+      case MoviePlatform.youtube:
+        // ref.read(movieStateNotifierProvider.notifier).unLike();
+        movieNotifier.unLike();
+        break;
+      case MoviePlatform.happyo:
+        // TODO: Handle this case.
+        break;
+      default:
+        // ref.read(movieStateNotifierProvider.notifier).unLike();
+        movieNotifier.unLike();
+        break;
+    }
   }
 }

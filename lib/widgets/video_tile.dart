@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:happyo/common/my_styles.dart';
-import 'package:happyo/common/routes.dart';
 import 'package:happyo/model/movie/movie.dart';
+import 'package:happyo/model/movie/movie_platform.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class VideoTile extends HookConsumerWidget {
-  const VideoTile(this.movie, {super.key});
-
   final Movie movie;
+  void Function()? onPressed;
+
+  VideoTile(this.movie, {super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
       onTap: () {
-        Routes.pushNamed(
-          context,
-          Routes.videoPlay,
-          args: movie,
-        );
+        onPressed?.call();
       },
       child: SizedBox(
         height: 100,
@@ -29,7 +26,7 @@ class VideoTile extends HookConsumerWidget {
                 height: 88,
                 width: 144,
                 child: Image.network(
-                  'http://img.youtube.com/vi/${movie.youtubeId.toString()}/mqdefault.jpg',
+                  movie.thumbnailImage.toString(),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -60,8 +57,8 @@ class VideoTile extends HookConsumerWidget {
                       ),
                       Row(
                         children: [
-                          if (movie.tag != null)
-                            for (var tag in movie.tag!)
+                          if (movie.tagList != null)
+                            for (var tag in movie.tagList!)
                               Padding(
                                 padding: const EdgeInsets.only(right: 4.0),
                                 child: Text(
@@ -78,7 +75,7 @@ class VideoTile extends HookConsumerWidget {
                 trailing: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      movie.videoHolder == 0
+                      movie.platform == MoviePlatform.happyo
                           ? const Icon(Icons.download_rounded)
                           : Column(
                               children: [
