@@ -148,9 +148,9 @@ class _SearchPageState extends ConsumerState {
         ishistoryVisible = _controller.text.isEmpty;
       });
       logger.debug(_controller.text);
-      Routes.pushNamed(context, Routes.searchResult, args: _controller.text);
-      _controller.clear();
     }
+    Routes.pushNamed(context, Routes.searchResult, args: _controller.text);
+    _controller.clear();
   }
 
   Future<void> _setKeyword(String id) async {
