@@ -1,6 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:happyo/common/format.dart';
+import 'package:happyo/common/my_auth.dart';
 import 'package:happyo/common/my_styles.dart';
 import 'package:happyo/common/routes.dart';
 import 'package:happyo/infrastructure/state/movie_state_notifier_provider.dart';
@@ -168,14 +168,12 @@ class _VideoPlayPageState extends ConsumerState<VideoPlayPage> {
                                     if (snapshot.data as bool) {
                                       return TextButton(
                                         onPressed: () async {
-                                          if (FirebaseAuth
-                                                  .instance.currentUser !=
-                                              null) {
-                                            onUnlike(movieState);
-                                            setState(() {});
-                                          } else {
-                                            // TODO: 未ログインの処理
-                                          }
+                                          MyAuth.onlyRegisteredUserAction(
+                                              context: context,
+                                              action: () {
+                                                onUnlike(movieState);
+                                                setState(() {});
+                                              });
                                         },
                                         child: Column(
                                           children: [
@@ -203,13 +201,12 @@ class _VideoPlayPageState extends ConsumerState<VideoPlayPage> {
                                   }
                                   return TextButton(
                                     onPressed: () async {
-                                      if (FirebaseAuth.instance.currentUser !=
-                                          null) {
-                                        onLike(movieState);
-                                        setState(() {});
-                                      } else {
-                                        // TODO: 未ログインの処理
-                                      }
+                                      MyAuth.onlyRegisteredUserAction(
+                                          context: context,
+                                          action: () {
+                                            onLike(movieState);
+                                            setState(() {});
+                                          });
                                     },
                                     child: Column(
                                       children: [
@@ -225,12 +222,11 @@ class _VideoPlayPageState extends ConsumerState<VideoPlayPage> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  if (FirebaseAuth.instance.currentUser !=
-                                      null) {
-                                    // TODO: マイリストの処理
-                                  } else {
-                                    // TODO: 未ログインの処理
-                                  }
+                                  MyAuth.onlyRegisteredUserAction(
+                                      context: context,
+                                      action: () {
+                                        //
+                                      });
                                 },
                                 child: Column(
                                   children: [
@@ -263,7 +259,11 @@ class _VideoPlayPageState extends ConsumerState<VideoPlayPage> {
                                 onPressed:
                                     movieState.platform == MoviePlatform.happyo
                                         ? () {
-                                            // TODO: 未実装
+                                            MyAuth.onlyRegisteredUserAction(
+                                                context: context,
+                                                action: () {
+                                                  //
+                                                });
                                           }
                                         : null,
                                 child: Column(
