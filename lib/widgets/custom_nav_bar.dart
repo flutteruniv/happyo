@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:happyo/page/home_page.dart';
 import 'package:happyo/page/profile/profile_page.dart';
-import 'package:happyo/page/seach_page.dart';
 
 class NavBarItem {
   const NavBarItem(this.iconData, this.text);
@@ -18,11 +17,11 @@ class CustomNavBar extends StatefulWidget {
 
 class _CustomNavBarState extends State<CustomNavBar> {
   int index = 0;
-  final _body = [HomePage(), SearchPage(), ProfilePage()];
+  final _body = [HomePage(), ProfilePage()];
 
   final navBarItemList = const <NavBarItem>[
     NavBarItem(Icons.home, 'ホーム'),
-    NavBarItem(Icons.search, '検索'),
+    // NavBarItem(Icons.search, '検索'),
     // NavBarItem(Icons.interests_outlined, '特集'),
     // NavBarItem(Icons.mail_outline_outlined, 'メッセージ'),
     NavBarItem(Icons.account_circle_outlined, 'マイページ'),

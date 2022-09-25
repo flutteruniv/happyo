@@ -8,7 +8,7 @@ class VideoTile extends HookConsumerWidget {
   final Movie movie;
   void Function()? onPressed;
 
-  VideoTile(this.movie, {super.key, required this.onPressed});
+  VideoTile({super.key, required this.onPressed, required this.movie});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
