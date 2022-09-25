@@ -37,21 +37,26 @@ class _VideoPlayPageState extends ConsumerState<VideoPlayPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            Text(
-              'HAPPY',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
+        title: InkWell(
+          onTap: () {
+            Routes.pushNamed(context, Routes.index);
+          },
+          child: Row(
+            children: [
+              Text(
+                'HAPPY',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
               ),
-            ),
-            Text(
-              'O',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.tertiary,
+              Text(
+                'O',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         centerTitle: false,
         actions: [

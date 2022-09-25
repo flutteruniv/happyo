@@ -50,6 +50,7 @@ class HomePage extends StatelessWidget {
             icon: const Icon(Icons.search),
           ),
         ],
+        automaticallyImplyLeading: false,
       ),
       // drawer: SideMenu(),
       body: CustomTabBar(
