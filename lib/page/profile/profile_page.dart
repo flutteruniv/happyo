@@ -18,10 +18,10 @@ class ProfilePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ProfileHeader(),
+            // ProfileHeader(),
             AppInfoBlock(),
             TermsInfoBlock(),
-            AccountBlock(),
+            if (FirebaseAuth.instance.currentUser != null) const AccountBlock(),
           ],
         ),
       ),
@@ -292,7 +292,7 @@ class AccountBlock extends StatelessWidget {
       await googleSignIn.signOut();
     }
 
-    return FirebaseAuth.instance.signOut();
+    FirebaseAuth.instance.signOut();
   }
 
   void deleteUser() async {
@@ -321,6 +321,10 @@ class AccountBlock extends StatelessWidget {
         TextButton(
           onPressed: () {
             logout();
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('ログアウトしました'),
+              duration: Duration(milliseconds: 1000),
+            ));
           },
           child: ListTile(
             title: Text(
