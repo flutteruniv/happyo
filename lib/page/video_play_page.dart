@@ -55,18 +55,18 @@ class _VideoPlayPageState extends ConsumerState<VideoPlayPage> {
         ),
         centerTitle: false,
         actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: 12,
-            ),
-            child: TextButton(
-              onPressed: () {
-                Routes.pushNamed(context, Routes.eventCreate);
-              },
-              child: const Text('イベント作成'),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(
+          //     vertical: 10,
+          //     horizontal: 12,
+          //   ),
+          //   child: TextButton(
+          //     onPressed: () {
+          //       Routes.pushNamed(context, Routes.eventCreate);
+          //     },
+          //     child: const Text('イベント作成'),
+          //   ),
+          // ),
           IconButton(
             onPressed: () {
               Routes.pushNamed(context, Routes.search);
