@@ -210,7 +210,12 @@ class _VideoPlayPageState extends ConsumerState<VideoPlayPage> {
                                     },
                                     child: Column(
                                       children: [
-                                        const Icon(Icons.thumb_up_alt_outlined),
+                                        Icon(
+                                          Icons.thumb_up_alt_outlined,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground,
+                                        ),
                                         Text(
                                           movieState.likes.toString(),
                                           style: MyStyles.font10(context),
@@ -230,7 +235,12 @@ class _VideoPlayPageState extends ConsumerState<VideoPlayPage> {
                                 },
                                 child: Column(
                                   children: [
-                                    const Icon(Icons.add),
+                                    Icon(
+                                      Icons.add,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
                                     Text(
                                       'マイリスト',
                                       style: MyStyles.font10(context),
@@ -247,7 +257,12 @@ class _VideoPlayPageState extends ConsumerState<VideoPlayPage> {
                                 },
                                 child: Column(
                                   children: [
-                                    const Icon(Icons.share),
+                                    Icon(
+                                      Icons.share,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
                                     Text(
                                       '共有',
                                       style: MyStyles.font10(context),
