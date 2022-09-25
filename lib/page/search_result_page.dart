@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:happyo/common/routes.dart';
 import 'package:happyo/infrastructure/repository/movie_repository.dart';
+import 'package:happyo/infrastructure/state/movie_state_notifier_provider.dart';
 import 'package:happyo/model/movie/movie.dart';
 import 'package:happyo/widgets/video_tile.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,6 +12,7 @@ class SearchResultPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     String? keyword = Routes.getArgs(context) as String?;
+    final movieNotifier = ref.watch(movieStateNotifierProvider.notifier);
 
     Future<List<Movie>> _search() async {
       return ref.read(movieRepositoryProvider).search(keyword.toString());
@@ -49,7 +51,12 @@ class SearchResultPage extends HookConsumerWidget {
                       itemBuilder: (context, index) {
                         return VideoTile(
                           movie: snapshot.data![index],
-                          onPressed: () {},
+                          onPressed: () async {
+                            final movie = await movieNotifier
+                                .findById(snapshot.data![index].id!);
+                            movieNotifier.set(movie);
+                            Routes.pushNamed(context, Routes.videoPlay);
+                          },
                         );
                       },
                     );
