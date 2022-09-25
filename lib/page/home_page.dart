@@ -51,7 +51,7 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      drawer: SideMenu(),
+      // drawer: SideMenu(),
       body: CustomTabBar(
         tabs: [
           Tab(text: 'ビデオタイル'),
