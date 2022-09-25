@@ -15,10 +15,10 @@ class LikeRepository {
   }
 
   Future<void> like(String id) async {
-    return _db.doc(id).update({'isLike': true});
+    return _db.doc(id).set({'isLike': true});
   }
 
   Future<void> unLike(String id) async {
-    return _db.doc(id).update({'isLike': false});
+    return _db.doc(id).set({'isLike': false});
   }
 }

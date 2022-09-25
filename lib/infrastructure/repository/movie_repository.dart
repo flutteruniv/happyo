@@ -1,4 +1,6 @@
+import 'package:algolia/algolia.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happyo/algolia_options.dart';
 import 'package:happyo/infrastructure/repository/like_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../model/movie/movie.dart';
@@ -30,6 +32,22 @@ class MovieRepository {
         .toList();
 
     return movieList;
+  }
+
+  Future<List<Movie>> search(String keyword) async {
+    List<Movie> list = [];
+    Algolia algolia = AlgoliaOptions.instance;
+    AlgoliaQuery query = algolia.index('movie').query(keyword);
+    query = query.setLength(100);
+    AlgoliaQuerySnapshot snapshot = await query.getObjects();
+    if (snapshot.hasHits) {
+      for (final hit in snapshot.hits) {
+        list.add(Movie.fromJson(hit.data));
+      }
+    }
+
+    print(list);
+    return list;
   }
 
   Future<void> like(Movie movie) async {

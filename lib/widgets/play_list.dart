@@ -19,10 +19,12 @@ class PlayList extends HookConsumerWidget {
     return ListView.builder(
       itemCount: state!.length,
       itemBuilder: (BuildContext context, int index) {
-        return VideoTile(state[index], onPressed: () {
-          movieNotifier.set(state[index]);
-          Routes.pushNamed(context, Routes.videoPlay);
-        });
+        return VideoTile(
+            movie: state[index],
+            onPressed: () {
+              movieNotifier.set(state[index]);
+              Routes.pushNamed(context, Routes.videoPlay);
+            });
       },
     );
   }
