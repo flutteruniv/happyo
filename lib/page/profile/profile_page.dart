@@ -102,7 +102,6 @@ class GuestProfileHeader extends StatelessWidget {
               TextButton(
                 onPressed: () => showModalBottomSheet(
                   context: context,
-                  backgroundColor: Colors.black,
                   shape: RoundedRectangleBorder(
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(15)),
