@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:happyo/common/routes.dart';
 import 'package:happyo/widgets/custom_tab_bar.dart';
+import 'package:happyo/widgets/play_list.dart';
 import 'package:happyo/widgets/side_menu.dart';
+
+import '../widgets/video_tile.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -28,18 +31,18 @@ class HomePage extends StatelessWidget {
         ),
         centerTitle: false,
         actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: 12,
-            ),
-            child: TextButton(
-              onPressed: () {
-                Routes.pushNamed(context, Routes.eventCreate);
-              },
-              child: const Text('イベント作成'),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(
+          //     vertical: 10,
+          //     horizontal: 12,
+          //   ),
+          //   child: TextButton(
+          //     onPressed: () {
+          //       Routes.pushNamed(context, Routes.eventCreate);
+          //     },
+          //     child: const Text('イベント作成'),
+          //   ),
+          // ),
           IconButton(
             onPressed: () {
               Routes.pushNamed(context, Routes.search);
@@ -47,10 +50,12 @@ class HomePage extends StatelessWidget {
             icon: const Icon(Icons.search),
           ),
         ],
+        automaticallyImplyLeading: false,
       ),
-      drawer: SideMenu(),
+      // drawer: SideMenu(),
       body: CustomTabBar(
         tabs: [
+          Tab(text: 'ビデオタイル'),
           Tab(text: 'ネットワーク'),
           Tab(text: 'おすすめ'),
           Tab(text: 'セキュリティ'),
@@ -58,7 +63,10 @@ class HomePage extends StatelessWidget {
           Tab(text: 'AI2'),
         ],
         list: [
-          Center(),
+          PlayList(),
+          Center(
+            child: Text('ネットワーク', style: TextStyle(fontSize: 32.0)),
+          ),
           Center(
             child: Text('おすすめ', style: TextStyle(fontSize: 32.0)),
           ),

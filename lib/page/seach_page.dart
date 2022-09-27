@@ -3,18 +3,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:happyo/common/logger.dart';
 import 'package:happyo/common/routes.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nil/nil.dart';
 
-class SearchPage extends StatefulWidget {
+class SearchPage extends StatefulHookConsumerWidget {
   const SearchPage({super.key});
 
   @override
-  State<SearchPage> createState() => _SearchPageState();
+  ConsumerState createState() => _SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _SearchPageState extends ConsumerState {
   final TextEditingController _controller = TextEditingController();
-  final user = FirebaseAuth.instance.currentUser!;
+  final user = FirebaseAuth.instance.currentUser;
 
   //検索バーに入力されていなければtrue → 検索履歴を表示する
   bool ishistoryVisible = true;
@@ -34,7 +35,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // The search area here
+        // 検索ワード入力エリア
         title: SizedBox(
           height: 36,
           child: TextField(
@@ -53,13 +54,13 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
         actions: [
+          // 検索ボタン
           Padding(
             padding:
                 const EdgeInsets.only(top: 10, bottom: 10, right: 12, left: 12),
             child: TextButton(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all(Colors.white),
-                backgroundColor: MaterialStateProperty.all(
+                foregroundColor: MaterialStateProperty.all(
                     Theme.of(context).colorScheme.tertiary),
                 shape: MaterialStateProperty.all(
                   RoundedRectangleBorder(
@@ -67,34 +68,18 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               onPressed: () async {
-                if (_controller.text.isNotEmpty) {
-                  final date =
-                      DateTime.now().toLocal().toIso8601String(); // 現在の日時
-                  final uid = FirebaseAuth
-                      .instance.currentUser!.uid; // AddPostPage のデータを参照
-                  await FirebaseFirestore.instance
-                      .collection('history') // コレクションID指定
-                      .doc() // ドキュメントID自動生成
-                      .set(
-                          {'text': _controller.text, 'uid': uid, 'date': date});
-                  setState(() {
-                    ishistoryVisible = _controller.text.isEmpty;
-                  });
-                  logger.debug(_controller.text);
-                }
-                Routes.pushNamed(
-                  context,
-                  Routes.searchResult,
-                  args: _controller.text,
-                );
-                _controller.clear();
+                _search();
               },
-              child: const Text('検索'),
+              child: const Text(
+                '検索',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ],
       ),
-      body: ishistoryVisible
+      // 検索履歴
+      body: ishistoryVisible && user != null
           ? Column(
               children: [
                 Container(
@@ -105,11 +90,11 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 ),
                 FutureBuilder<QuerySnapshot>(
-                  // 投稿メッセージ一覧を取得（非同期処理）
-                  // 投稿日時でソート
                   future: _getSearchKeywordHistory(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
+                  builder: (
+                    BuildContext context,
+                    AsyncSnapshot<QuerySnapshot<Object?>> snapshot,
+                  ) {
                     // データが取得できた場合
                     if (snapshot.hasData) {
                       final documents = snapshot.data!.docs;
@@ -121,15 +106,7 @@ class _SearchPageState extends State<SearchPage> {
                           return ListTile(
                             title: InkWell(
                               onTap: () {
-                                FirebaseFirestore.instance
-                                    .collection('history')
-                                    .doc(document.id)
-                                    .get()
-                                    .then((DocumentSnapshot snapshot) {
-                                  _controller.text = snapshot.get('text');
-                                  logger.debug(_controller.text.toString());
-                                });
-                                setState(() {});
+                                _setKeyword(document.id);
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -140,12 +117,7 @@ class _SearchPageState extends State<SearchPage> {
                             trailing: IconButton(
                               icon: const Icon(Icons.clear),
                               onPressed: () async {
-                                // 投稿メッセージのドキュメントを削除
-                                await FirebaseFirestore.instance
-                                    .collection('history')
-                                    .doc(document.id)
-                                    .delete();
-                                setState(() {});
+                                _removeHistory(document.id);
                               },
                             ),
                           );
@@ -164,10 +136,47 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
+  Future<void> _search() async {
+    if (user != null) {
+      final date = DateTime.now().toLocal().toIso8601String(); // 現在の日時
+      final uid = FirebaseAuth.instance.currentUser!.uid; // AddPostPage のデータを参照
+      await FirebaseFirestore.instance
+          .collection('history') // コレクションID指定
+          .doc() // ドキュメントID自動生成
+          .set({'text': _controller.text, 'uid': uid, 'date': date});
+      setState(() {
+        ishistoryVisible = _controller.text.isEmpty;
+      });
+      logger.debug(_controller.text);
+    }
+    Routes.pushNamed(context, Routes.searchResult, args: _controller.text);
+    _controller.clear();
+  }
+
+  Future<void> _setKeyword(String id) async {
+    await FirebaseFirestore.instance
+        .collection('history')
+        .doc(id)
+        .get()
+        .then((DocumentSnapshot snapshot) {
+      _controller.text = snapshot.get('text');
+      logger.debug(_controller.text.toString());
+    });
+    setState(() {});
+  }
+
+  Future<void> _removeHistory(String id) async {
+    // 投稿メッセージのドキュメントを削除
+    await FirebaseFirestore.instance.collection('history').doc(id).delete();
+    setState(() {});
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> _getSearchKeywordHistory() async {
+    // 投稿メッセージ一覧を取得（非同期処理）
+    // 投稿日時でソート
     final snapshot = await FirebaseFirestore.instance
         .collection('history')
-        .where("uid", isEqualTo: user.uid)
+        .where("uid", isEqualTo: user!.uid)
         .orderBy('date', descending: true)
         .limit(6)
         .get();

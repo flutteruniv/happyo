@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:happyo/common/time_stamp_converter.dart';
+import 'package:happyo/model/movie/movie_platform.dart';
 
 part 'movie.freezed.dart';
 part 'movie.g.dart';
@@ -6,11 +9,35 @@ part 'movie.g.dart';
 @freezed
 class Movie with _$Movie {
   factory Movie({
-    // YouTube動画Id
-    String? youtubeId,
+    // ID
+    String? id,
 
-    // その他動画のURL
-    String? hlsUrl,
+    // 動画タイトル
+    String? title,
+
+    // 動画カテゴリ
+    List<String>? categoryList,
+
+    // サムネイル画像
+    String? thumbnailImage,
+
+    // ダウンロードURL
+    String? downloadUrl,
+
+    // ストリーミングURL
+    String? streamingUrl,
+
+    // プラットフォーム
+    MoviePlatform? platform,
+
+    // 投稿者Id
+    String? hostId,
+
+    // 投稿者名
+    String? hostName,
+
+    // YouTube動画のタグ
+    List<String>? tagList,
 
     // いいね数
     int? likes,
@@ -18,29 +45,23 @@ class Movie with _$Movie {
     // 視聴数
     int? views,
 
-    // 投稿者名
-    String? hostName,
+    // 作成日時
+    @TimestampConverter() DateTime? createdAt,
 
-    // 投稿者Id
-    String? hostId,
+    // 作成者
+    String? createdBy,
 
-    // ダウンロードURL
-    String? downloadUrl,
+    // 更新日時
+    @TimestampConverter() DateTime? updatedAt,
 
-    // コンテンツ所持者(0:Happyo, 1:YouTube)
-    int? videoHolder,
+    // 更新者
+    String? updatedBy,
 
-    // 動画カテゴリ
-    List<String>? category,
+    // 削除日時
+    @TimestampConverter() DateTime? deletedAt,
 
-    // 動画投稿日時
-    DateTime? postedAt,
-
-    // 動画タイトル
-    String? title,
-
-    // YouTube動画のタグ
-    List<String>? tag,
+    // 削除者
+    String? deletedBy,
   }) = _Movie;
 
   factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);

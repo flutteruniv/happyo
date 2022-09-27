@@ -28,6 +28,7 @@ class CustomTabBar extends StatelessWidget {
               labelColor: Theme.of(context).colorScheme.onSurface,
             ),
           ),
+          automaticallyImplyLeading: false,
         ),
         body: TabBarView(
           children: list,

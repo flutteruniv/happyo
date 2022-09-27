@@ -7,6 +7,51 @@ abstract class MyStyles {
     );
   }
 
+  // ビデオタイルの動画タイトルテキスト
+  static TextStyle tileTitleText(BuildContext context) {
+    return TextStyle(
+      height: 1.1,
+      color: Theme.of(context).colorScheme.onBackground,
+      fontWeight: FontWeight.bold,
+      fontSize: 12,
+    );
+  }
+
+  // ビデオタイルの動画ホスト名テキスト、VideoPlayPageの視聴回数、日時、タグ、アイコン下テキスト
+  static TextStyle font10(BuildContext context) {
+    return TextStyle(
+      fontSize: 10,
+      color: Theme.of(context).colorScheme.onBackground,
+    );
+  }
+
+  // ビデオタイルの動画タグ名テキスト
+  static TextStyle tileTagNameText(BuildContext context) {
+    return TextStyle(
+      fontSize: 11,
+      color: Theme.of(context).colorScheme.onBackground,
+    );
+  }
+
+  // VideoPlayPageのホスト名テキスト
+  static TextStyle hostText(BuildContext context) {
+    return TextStyle(
+      fontSize: 14,
+      height: 0,
+      fontWeight: FontWeight.bold,
+      color: Theme.of(context).colorScheme.onBackground,
+    );
+  }
+
+  // VideoPlayPageの”+フォローする”ボタン
+  static TextStyle followButtonText(BuildContext context) {
+    return TextStyle(
+      fontSize: 10,
+      fontWeight: FontWeight.bold,
+      color: Theme.of(context).colorScheme.tertiary,
+    );
+  }
+
   static ButtonStyle defaultButton(BuildContext context) {
     return ButtonStyle(
       backgroundColor: MaterialStateProperty.all(

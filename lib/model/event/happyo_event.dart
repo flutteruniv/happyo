@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:happyo/model/movie/movie_platform.dart';
 import 'package:happyo/model/pricing/pricing.dart';
 import 'package:happyo/model/user/user.dart';
 import 'package:intl/intl.dart';
@@ -89,8 +90,8 @@ class HappyoEvent with _$HappyoEvent {
     // 動画配信タイプ(0:undefined, 1:Live, 2:Streaming)
     int? videoDeliveryType,
 
-    // コンテンツ所持者(0:Happyo, 1:YouTube)
-    int? videoHolder,
+    // コンテンツ所持者
+    MoviePlatform? videoHolder,
 
     // 動画URL
     String? videoUrl,
