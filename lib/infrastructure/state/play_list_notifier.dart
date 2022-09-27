@@ -1,4 +1,4 @@
-import 'package:happyo/infrastructure/repository/movie_repository.dart';
+import 'package:happyo/infrastructure/repository/movies_repository.dart';
 import 'package:happyo/model/movie/movie.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

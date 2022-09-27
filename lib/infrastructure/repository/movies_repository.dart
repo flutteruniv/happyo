@@ -18,7 +18,7 @@ class MovieRepository {
   MovieRepository({
     required this.likeRepository,
   }) {
-    _movieRef = _db.collection('movie');
+    _movieRef = _db.collection('movies');
   }
 
   Future<List<Movie>> fetchAll() async {
@@ -37,7 +37,7 @@ class MovieRepository {
   Future<List<Movie>> search(String keyword) async {
     List<Movie> list = [];
     Algolia algolia = AlgoliaOptions.instance;
-    AlgoliaQuery query = algolia.index('movie').query(keyword);
+    AlgoliaQuery query = algolia.index('movies').query(keyword);
     query = query.setLength(100);
     AlgoliaQuerySnapshot snapshot = await query.getObjects();
     if (snapshot.hasHits) {

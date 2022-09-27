@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:happyo/common/routes.dart';
-import 'package:happyo/infrastructure/repository/movie_repository.dart';
+import 'package:happyo/infrastructure/repository/movies_repository.dart';
 import 'package:happyo/infrastructure/state/movie_state_notifier_provider.dart';
 import 'package:happyo/model/movie/movie.dart';
 import 'package:happyo/widgets/video_tile.dart';

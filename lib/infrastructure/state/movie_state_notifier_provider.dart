@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happyo/infrastructure/repository/like_repository.dart';
-import 'package:happyo/infrastructure/repository/movie_repository.dart';
+import 'package:happyo/infrastructure/repository/movies_repository.dart';
 import 'package:happyo/model/movie/movie.dart';
 import 'package:happyo/model/movie/movie_platform.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
