@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:happyo/widgets/login_modal.dart';
 
 class MyAuth {
-  static void onlyRegisteredUserAction({
+  static Future<void> onlyRegisteredUserAction({
     required BuildContext context,
     required void Function()? action,
-  }) {
+  }) async {
     if (FirebaseAuth.instance.currentUser == null) {
-      LoginModal.showLoginModal(context);
-    } else {
-      action?.call();
+      final user = await LoginModal.showLoginModal(context);
+      if (user == null) return;
     }
+    action?.call();
   }
 }
