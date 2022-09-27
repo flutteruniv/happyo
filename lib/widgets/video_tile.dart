@@ -55,19 +55,6 @@ class VideoTile extends HookConsumerWidget {
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          if (movie.tagList != null)
-                            for (var tag in movie.tagList!)
-                              Padding(
-                                padding: const EdgeInsets.only(right: 4.0),
-                                child: Text(
-                                  '#${tag!.toString()}',
-                                  style: MyStyles.tileTagNameText(context),
-                                ),
-                              ),
-                        ],
-                      ),
                       const SizedBox(height: 4),
                     ],
                   ),
