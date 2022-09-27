@@ -24,7 +24,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
     // NavBarItem(Icons.search, '検索'),
     // NavBarItem(Icons.interests_outlined, '特集'),
     // NavBarItem(Icons.mail_outline_outlined, 'メッセージ'),
-    NavBarItem(Icons.account_circle_outlined, 'マイページ'),
+    NavBarItem(Icons.settings, '設定'),
   ];
 
   @override

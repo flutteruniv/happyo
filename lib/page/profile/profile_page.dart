@@ -11,7 +11,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'プロフィール',
+          '設定',
           style: MyStyles.defaultText(context),
         ),
       ),
