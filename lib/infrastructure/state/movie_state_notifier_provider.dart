@@ -29,7 +29,7 @@ class MovieNotifier extends StateNotifier<Movie?> {
 
   Future<Movie?> findById(String id) async {
     final snapshot =
-        await FirebaseFirestore.instance.collection('movie').doc(id).get();
+        await FirebaseFirestore.instance.collection('movies').doc(id).get();
     return Movie.fromJson(snapshot.data()!);
   }
 
