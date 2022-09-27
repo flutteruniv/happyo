@@ -37,7 +37,7 @@ class MovieRepository {
   Future<List<Movie>> search(String keyword) async {
     List<Movie> list = [];
     Algolia algolia = AlgoliaOptions.instance;
-    AlgoliaQuery query = algolia.index('movies').query(keyword);
+    AlgoliaQuery query = algolia.index('movies-dev').query(keyword);
     query = query.setLength(100);
     AlgoliaQuerySnapshot snapshot = await query.getObjects();
     if (snapshot.hasHits) {
@@ -79,5 +79,9 @@ class MovieRepository {
       'deletedAt': json['deletedAt'],
       'deletedBy': json['deletedBy'],
     };
+  }
+
+  Future<void> play(Movie movie) async {
+    return _movieRef.doc(movie.id).update({"views": FieldValue.increment(1)});
   }
 }

@@ -31,6 +31,14 @@ class _VideoPlayPageState extends ConsumerState<VideoPlayPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      movieNotifier.play();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     movieState = ref.watch(movieStateNotifierProvider)!;
     movieNotifier = ref.watch(movieStateNotifierProvider.notifier);

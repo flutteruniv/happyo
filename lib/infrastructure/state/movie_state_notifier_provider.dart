@@ -88,4 +88,10 @@ class MovieNotifier extends StateNotifier<Movie?> {
       }
     }
   }
+
+  Future<void> play() async {
+    if (state != null) {
+      _movieRepository.play(state!);
+    }
+  }
 }
