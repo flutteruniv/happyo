@@ -6,6 +6,7 @@ import 'package:happyo/common/routes.dart';
 import 'package:happyo/infrastructure/state/movie_state_notifier_provider.dart';
 import 'package:happyo/model/movie/movie.dart';
 import 'package:happyo/model/movie/movie_platform.dart';
+import 'package:happyo/widgets/my_snack_bar.dart';
 import 'package:happyo/widgets/play_list.dart';
 import 'package:happyo/widgets/youtube_player.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -237,8 +238,20 @@ class _VideoPlayPageState extends ConsumerState<VideoPlayPage> {
                                 onPressed: () {
                                   MyAuth.onlyRegisteredUserAction(
                                       context: context,
-                                      action: () {
-                                        //
+                                      action: () async {
+                                        final res =
+                                            await movieNotifier.addToMyList();
+                                        String message;
+                                        res
+                                            ? message = "マイリストに追加しました"
+                                            : message = "既に登録済みです";
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          MySnackBar(
+                                            context: context,
+                                            message: message,
+                                          ),
+                                        );
                                       });
                                 },
                                 child: Column(

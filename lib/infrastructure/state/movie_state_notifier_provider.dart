@@ -15,12 +15,12 @@ final movieStateNotifierProvider =
 });
 
 class MovieNotifier extends StateNotifier<Movie?> {
-  final MovieRepository _movieRepository;
+  final MoviesRepository _movieRepository;
   // final MovieListRepository _movieListRepository;
   final LikeRepository _likeRepository;
 
   MovieNotifier({
-    required MovieRepository movieRepository,
+    required MoviesRepository movieRepository,
     // required MovieListRepository movieListRepository,
     required LikeRepository likeRepository,
   })  : _movieRepository = movieRepository,
@@ -63,7 +63,7 @@ class MovieNotifier extends StateNotifier<Movie?> {
 
   Future<void> addToMyList() async {
     if (state != null) {
-      // _movieListRepository.add(state!);
+      _movieRepository.addMovieToUsersMovieList('MyList', state!);
     }
   }
 

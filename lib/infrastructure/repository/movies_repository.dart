@@ -1,21 +1,21 @@
 import 'package:algolia/algolia.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:happyo/algolia_options.dart';
 import 'package:happyo/infrastructure/repository/like_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../model/movie/movie.dart';
 
-final movieRepositoryProvider = Provider((ref) => MovieRepository(
+final movieRepositoryProvider = Provider((ref) => MoviesRepository(
       likeRepository: ref.read(likeRepositoryProvider),
     ));
 
-class MovieRepository {
+class MoviesRepository {
   final _db = FirebaseFirestore.instance;
   late CollectionReference _movieRef;
-  List<Movie> movieList = [];
   LikeRepository likeRepository;
 
-  MovieRepository({
+  MoviesRepository({
     required this.likeRepository,
   }) {
     _movieRef = _db.collection('movies');
@@ -23,15 +23,13 @@ class MovieRepository {
 
   Future<List<Movie>> fetchAll() async {
     final snapshot = await _movieRef.get();
-    movieList = snapshot.docs
+    return snapshot.docs
         .map(
           (item) => Movie.fromJson(
             _jsonFromSnapshot(item),
           ),
         )
         .toList();
-
-    return movieList;
   }
 
   Future<List<Movie>> search(String keyword) async {
@@ -45,8 +43,6 @@ class MovieRepository {
         list.add(Movie.fromJson(hit.data));
       }
     }
-
-    print(list);
     return list;
   }
 
@@ -57,6 +53,49 @@ class MovieRepository {
   Future<void> unLike(Movie movie) async {
     return _movieRef.doc(movie.id).update({"likes": FieldValue.increment(-1)});
   }
+
+  Future<void> play(Movie movie) async {
+    return _movieRef.doc(movie.id).update({"views": FieldValue.increment(1)});
+  }
+
+  Future<bool> addMovieToUsersMovieList(String listName, Movie movie) async {
+    // DocumentReference<Map<String, dynamic>> docRef;
+    final snapshot = await _db
+        .collection('usersMovieList')
+        .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .where('listName', isEqualTo: listName)
+        .get();
+    if (snapshot.docs.isNotEmpty) {
+      final listRef = snapshot.docs.first.reference.collection('listMovies');
+      final movieSnapshot =
+          await listRef.where('id', isEqualTo: movie.id).get();
+      // 未登録の場合のみ登録する
+      if (movieSnapshot.size == 0) {
+        snapshot.docs.first.reference
+            .collection('listMovies')
+            .doc()
+            .set(movie.toJson());
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Future<List<Movie>> getUsersMovieList(String listName) async {
+  //   List<Movie> list = [];
+  //   final listSnapshot = await _db.collection('usersMovieList').where({
+  //     'userId': FirebaseAuth.instance.currentUser!.uid,
+  //     'listName': listName,
+  //   }).get();
+  //   for (final listDoc in listSnapshot.docs) {
+  //     final moviesSnapshot =
+  //         await listDoc.reference.collection('listMovies').get();
+  //     for (final movieDoc in moviesSnapshot.docs) {
+  //       list.add(Movie.fromJson(movieDoc.data()));
+  //     }
+  //   }
+  //   return list;
+  // }
 
   Map<String, dynamic> _jsonFromSnapshot<T extends DocumentSnapshot>(T json) {
     return {
@@ -79,9 +118,5 @@ class MovieRepository {
       'deletedAt': json['deletedAt'],
       'deletedBy': json['deletedBy'],
     };
-  }
-
-  Future<void> play(Movie movie) async {
-    return _movieRef.doc(movie.id).update({"views": FieldValue.increment(1)});
   }
 }
