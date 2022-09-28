@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:happyo/common/my_auth.dart';
 import 'package:happyo/page/home_page.dart';
+import 'package:happyo/page/my_list_page.dart';
 import 'package:happyo/page/profile/profile_page.dart';
 
 class NavBarItem {
@@ -17,13 +19,14 @@ class CustomNavBar extends StatefulWidget {
 
 class _CustomNavBarState extends State<CustomNavBar> {
   int index = 0;
-  final _body = [HomePage(), ProfilePage()];
+  final _body = [HomePage(), MyListPage(), ProfilePage()];
 
   final navBarItemList = const <NavBarItem>[
     NavBarItem(Icons.home, 'ホーム'),
     // NavBarItem(Icons.search, '検索'),
     // NavBarItem(Icons.interests_outlined, '特集'),
     // NavBarItem(Icons.mail_outline_outlined, 'メッセージ'),
+    NavBarItem(Icons.move_to_inbox, 'マイリスト'),
     NavBarItem(Icons.settings, '設定'),
   ];
 
@@ -44,9 +47,20 @@ class _CustomNavBarState extends State<CustomNavBar> {
           type: BottomNavigationBarType.fixed,
           currentIndex: index,
           onTap: (value) {
-            setState(() {
-              index = value;
-            });
+            if (value == 1) {
+              // マイリストはログインしている場合のみ操作可能
+              MyAuth.onlyRegisteredUserAction(
+                  context: context,
+                  action: () {
+                    setState(() {
+                      index = value;
+                    });
+                  });
+            } else {
+              setState(() {
+                index = value;
+              });
+            }
           },
           showSelectedLabels: true,
           unselectedItemColor: Theme.of(context).colorScheme.onBackground,

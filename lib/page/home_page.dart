@@ -58,7 +58,7 @@ class HomePage extends StatelessWidget {
           for (final cateogry in categories) Tab(text: cateogry),
         ],
         list: [
-          for (final cateogry in categories) PlayList(categoryName: cateogry),
+          for (final cateogry in categories) PlayList(title: cateogry),
         ],
       ),
     );

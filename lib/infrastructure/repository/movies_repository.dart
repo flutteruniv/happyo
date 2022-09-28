@@ -70,15 +70,31 @@ class MoviesRepository {
       final movieSnapshot =
           await listRef.where('id', isEqualTo: movie.id).get();
       // 未登録の場合のみ登録する
-      if (movieSnapshot.size == 0) {
+      if (movieSnapshot.docs.isEmpty) {
         snapshot.docs.first.reference
             .collection('listMovies')
-            .doc()
+            .doc(movie.id)
             .set(movie.toJson());
         return true;
       }
     }
     return false;
+  }
+
+  Future<void> removeMovieFromUsersMovieList(
+      String listName, Movie movie) async {
+    final snapshot = await _db
+        .collection('usersMovieList')
+        .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .where('listName', isEqualTo: listName)
+        .get();
+    if (snapshot.docs.isNotEmpty) {
+      print(movie.id);
+      snapshot.docs.first.reference
+          .collection('listMovies')
+          .doc(movie.id)
+          .delete();
+    }
   }
 
   Future<List<Movie>> fetchCategorizedPlayList(String categoryName) async {
@@ -89,6 +105,24 @@ class MoviesRepository {
         .get();
     for (final doc in snapshot.docs) {
       list.add(Movie.fromJson(doc.data()));
+    }
+    print(list);
+    return list;
+  }
+
+  Future<List<Movie>> fetchMyList() async {
+    List<Movie> list = [];
+    final snapshot = await _db
+        .collection('usersMovieList')
+        .where('listName', isEqualTo: 'MyList')
+        .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    if (snapshot.docs.isNotEmpty) {
+      final movieSnapshot =
+          await snapshot.docs.first.reference.collection('listMovies').get();
+      for (final doc in movieSnapshot.docs) {
+        list.add(Movie.fromJson(doc.data()));
+      }
     }
     print(list);
     return list;

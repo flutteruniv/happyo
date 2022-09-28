@@ -7,11 +7,11 @@ import 'package:happyo/widgets/video_tile.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class PlayList extends StatefulHookConsumerWidget {
-  String? categoryName;
+  String? title;
 
   PlayList({
     super.key,
-    this.categoryName,
+    this.title,
   });
 
   @override
@@ -24,10 +24,10 @@ class PlayListState extends ConsumerState<PlayList> {
   MovieNotifier? movieNotifier;
 
   void _fetchPlayList() {
-    if (widget.categoryName == null) {
+    if (widget.title == null) {
       notifier!.fetchAll();
     } else {
-      notifier!.fetchCategorizedPlayList(widget.categoryName!);
+      notifier!.fetchCategorizedPlayList(widget.title!);
     }
   }
 
