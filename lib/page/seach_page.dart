@@ -69,6 +69,8 @@ class _SearchPageState extends ConsumerState {
               ),
               onPressed: () async {
                 _search();
+                Routes.pushNamed(context, Routes.searchResult,
+                    args: _controller.text);
               },
               child: const Text(
                 '検索',
@@ -137,19 +139,28 @@ class _SearchPageState extends ConsumerState {
   }
 
   Future<void> _search() async {
-    if (user != null) {
+    if (user != null && _controller.text.isNotEmpty) {
       final date = DateTime.now().toLocal().toIso8601String(); // 現在の日時
       final uid = FirebaseAuth.instance.currentUser!.uid; // AddPostPage のデータを参照
-      await FirebaseFirestore.instance
+      final recordsSnapshot = await FirebaseFirestore.instance
           .collection('history') // コレクションID指定
-          .doc() // ドキュメントID自動生成
-          .set({'text': _controller.text, 'uid': uid, 'date': date});
-      setState(() {
-        ishistoryVisible = _controller.text.isEmpty;
-      });
-      logger.debug(_controller.text);
+          .where('uid', isEqualTo: uid)
+          .where('text', isEqualTo: _controller.text)
+          .get();
+
+      if (recordsSnapshot.docs.isNotEmpty) {
+        recordsSnapshot.docs.first.reference
+            .update({'text': _controller.text, 'uid': uid, 'date': date});
+      } else {
+        FirebaseFirestore.instance
+            .collection('history') // コレクションID指定
+            .doc() // ドキュメントID自動生成
+            .set({'text': _controller.text, 'uid': uid, 'date': date});
+        setState(() {
+          ishistoryVisible = _controller.text.isEmpty;
+        });
+      }
     }
-    Routes.pushNamed(context, Routes.searchResult, args: _controller.text);
     _controller.clear();
   }
 
