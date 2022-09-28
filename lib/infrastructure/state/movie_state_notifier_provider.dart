@@ -61,10 +61,11 @@ class MovieNotifier extends StateNotifier<Movie?> {
     state = await findById(state!.id!);
   }
 
-  Future<void> addToMyList() async {
+  Future<bool> addToMyList() async {
     if (state != null) {
-      _movieRepository.addMovieToUsersMovieList('MyList', state!);
+      return _movieRepository.addMovieToUsersMovieList('MyList', state!);
     }
+    return false;
   }
 
   Future<void> removeFromMyList() async {

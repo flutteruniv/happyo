@@ -378,7 +378,7 @@ class _VideoPlayPageState extends ConsumerState<VideoPlayPage> {
               ],
             ),
           ),
-          const Expanded(child: PlayList()),
+          Expanded(child: PlayList()),
         ],
       ),
     );

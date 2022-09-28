@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:happyo/widgets/youtube_player.dart';
+import 'package:happyo/infrastructure/repository/master_repository.dart';
 import 'package:happyo/common/my_theme.dart';
 import 'package:happyo/common/logger.dart';
 import 'package:happyo/common/routes.dart';
@@ -13,6 +13,7 @@ Future<void> main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    await MasterRepository.instance.initialie('ver1.0.0');
   } catch (e) {
     logger.error("application initialize error: ", args: e);
   }

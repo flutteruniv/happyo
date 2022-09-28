@@ -25,6 +25,10 @@ class PlayListNotifier extends StateNotifier<List<Movie>?> {
     _movieRepository.addMovieToUsersMovieList(listName, movie);
   }
 
+  Future<void> fetchCategorizedPlayList(String categoryName) async {
+    state = await _movieRepository.fetchCategorizedPlayList(categoryName);
+  }
+
   // Future<List<Movie>> getUsersMovieList(String listName) async {
   //   return _movieRepository.getUsersMovieList(listName);
   // }

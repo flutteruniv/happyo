@@ -81,6 +81,19 @@ class MoviesRepository {
     return false;
   }
 
+  Future<List<Movie>> fetchCategorizedPlayList(String categoryName) async {
+    List<Movie> list = [];
+    final snapshot = await _db
+        .collection('movies')
+        .where('categoryList', arrayContains: categoryName)
+        .get();
+    for (final doc in snapshot.docs) {
+      list.add(Movie.fromJson(doc.data()));
+    }
+    print(list);
+    return list;
+  }
+
   // Future<List<Movie>> getUsersMovieList(String listName) async {
   //   List<Movie> list = [];
   //   final listSnapshot = await _db.collection('usersMovieList').where({

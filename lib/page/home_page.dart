@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:happyo/common/routes.dart';
+import 'package:happyo/infrastructure/repository/master_repository.dart';
 import 'package:happyo/widgets/custom_tab_bar.dart';
 import 'package:happyo/widgets/play_list.dart';
-import 'package:happyo/widgets/side_menu.dart';
-
-import '../widgets/video_tile.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final categories = MasterRepository.instance.master.categories;
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -55,30 +55,10 @@ class HomePage extends StatelessWidget {
       // drawer: SideMenu(),
       body: CustomTabBar(
         tabs: [
-          Tab(text: 'ビデオタイル'),
-          Tab(text: 'ネットワーク'),
-          Tab(text: 'おすすめ'),
-          Tab(text: 'セキュリティ'),
-          Tab(text: 'AI'),
-          Tab(text: 'AI2'),
+          for (final cateogry in categories) Tab(text: cateogry),
         ],
         list: [
-          PlayList(),
-          Center(
-            child: Text('ネットワーク', style: TextStyle(fontSize: 32.0)),
-          ),
-          Center(
-            child: Text('おすすめ', style: TextStyle(fontSize: 32.0)),
-          ),
-          Center(
-            child: Text('セキュリティ', style: TextStyle(fontSize: 32.0)),
-          ),
-          Center(
-            child: Text('AI', style: TextStyle(fontSize: 32.0)),
-          ),
-          Center(
-            child: Text('AI2', style: TextStyle(fontSize: 32.0)),
-          ),
+          for (final cateogry in categories) PlayList(categoryName: cateogry),
         ],
       ),
     );
