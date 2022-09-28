@@ -17,16 +17,16 @@ class PlayListNotifier extends StateNotifier<List<Movie>?> {
 
   final MoviesRepository _movieRepository;
 
-  Future<void> fetchAll() async {
-    state = await _movieRepository.fetchAll();
+  Future<List<Movie>> fetchAll() async {
+    return _movieRepository.fetchAll();
   }
 
   Future<void> addMovieToUsersMovieList(String listName, Movie movie) async {
     _movieRepository.addMovieToUsersMovieList(listName, movie);
   }
 
-  Future<void> fetchCategorizedPlayList(String categoryName) async {
-    state = await _movieRepository.fetchCategorizedPlayList(categoryName);
+  Future<List<Movie>> fetchCategorizedPlayList(String categoryName) async {
+    return _movieRepository.fetchCategorizedPlayList(categoryName);
   }
 
   Future<List<Movie>> fetchMyList() async {

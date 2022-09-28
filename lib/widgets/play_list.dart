@@ -23,20 +23,12 @@ class PlayListState extends ConsumerState<PlayList> {
   PlayListNotifier? notifier;
   MovieNotifier? movieNotifier;
 
-  void _fetchPlayList() {
+  Future<List<Movie>> _fetchPlayList() {
     if (widget.title == null) {
-      notifier!.fetchAll();
+      return notifier!.fetchAll();
     } else {
-      notifier!.fetchCategorizedPlayList(widget.title!);
+      return notifier!.fetchCategorizedPlayList(widget.title!);
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _fetchPlayList();
-    });
   }
 
   @override
@@ -45,16 +37,28 @@ class PlayListState extends ConsumerState<PlayList> {
     notifier = ref.watch(playListNotifierProvider.notifier);
     movieNotifier = ref.watch(movieStateNotifierProvider.notifier);
 
-    return ListView.builder(
-      itemCount: state!.length,
-      itemBuilder: (BuildContext context, int index) {
-        return VideoTile(
-            movie: state![index],
-            onPressed: () {
-              movieNotifier!.set(state![index]);
-              Routes.pushNamed(context, Routes.videoPlay);
-            });
-      },
-    );
+    return FutureBuilder<Object>(
+        future: _fetchPlayList(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final list = snapshot.data! as List<Movie>;
+            if (list.isEmpty) {
+              return const Center(child: Text('データが存在しません'));
+            } else {
+              return ListView.builder(
+                itemCount: list.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return VideoTile(
+                      movie: list[index],
+                      onPressed: () {
+                        movieNotifier!.set(list[index]);
+                        Routes.pushNamed(context, Routes.videoPlay);
+                      });
+                },
+              );
+            }
+          }
+          return const Center(child: Text('データ取得中...'));
+        });
   }
 }
