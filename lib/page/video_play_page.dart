@@ -147,19 +147,19 @@ class _VideoPlayPageState extends ConsumerState<VideoPlayPage> {
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: 16,
-                        child: Row(
-                          children: [
-                            if (movieState.tagList != null)
-                              for (var tag in movieState.tagList!)
-                                Text(
-                                  '#${tag.toString()}',
-                                  style: MyStyles.font10(context),
-                                ),
-                          ],
-                        ),
-                      ),
+                      // SizedBox(
+                      //   height: 16,
+                      //   child: Wrap(
+                      //     children: [
+                      //       if (movieState.tagList != null)
+                      //         for (var tag in movieState.tagList!)
+                      //           Text(
+                      //             '#${tag.toString()}',
+                      //             style: MyStyles.font10(context),
+                      //           ),
+                      //     ],
+                      //   ),
+                      // ),
                       const SizedBox(
                         height: 8,
                       ),
