@@ -60,9 +60,11 @@ class MoviesRepository {
 
   Future<bool> addMovieToUsersMovieList(String listName, Movie movie) async {
     // DocumentReference<Map<String, dynamic>> docRef;
-    final snapshot = await _db
-        .collection('usersMovieList')
-        .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+    final docRef = _db.collection('usersMovieList');
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+
+    final snapshot = await docRef
+        .where('userId', isEqualTo: userId)
         .where('listName', isEqualTo: listName)
         .get();
     if (snapshot.docs.isNotEmpty) {
@@ -77,6 +79,19 @@ class MoviesRepository {
             .set(movie.toJson());
         return true;
       }
+    } else {
+      // userId,listNameが登録されていないとき
+      // userId,listNameの登録
+      docRef.doc(userId).set({
+        'userId': userId,
+        'listName': listName,
+      });
+      // myListに追加した動画の情報登録
+      docRef
+          .doc(userId)
+          .collection('listMovies')
+          .doc(movie.id)
+          .set(movie.toJson());
     }
     return false;
   }
