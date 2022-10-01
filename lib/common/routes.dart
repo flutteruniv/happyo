@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:happyo/page/event/event_create_page.dart';
 import 'package:happyo/page/home_page.dart';
-import 'package:happyo/page/profile/profile_page.dart';
+import 'package:happyo/page/settings/settings_page.dart';
 import 'package:happyo/page/seach_page.dart';
 import 'package:happyo/page/search_result_page.dart';
 import 'package:happyo/page/video_play_page.dart';

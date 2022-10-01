@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:happyo/common/my_auth.dart';
 import 'package:happyo/page/home_page.dart';
 import 'package:happyo/page/my_list_page.dart';
-import 'package:happyo/page/profile/profile_page.dart';
+import 'package:happyo/page/settings/settings_page.dart';
 
 class NavBarItem {
   const NavBarItem(this.iconData, this.text);

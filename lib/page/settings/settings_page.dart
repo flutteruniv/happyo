@@ -19,8 +19,8 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           children: [
             // ProfileHeader(),
-            AppInfoBlock(),
-            TermsInfoBlock(),
+            // AppInfoBlock(),
+            // TermsInfoBlock(),
             if (FirebaseAuth.instance.currentUser != null) const AccountBlock(),
           ],
         ),
